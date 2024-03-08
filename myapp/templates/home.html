@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - My Django App{% endblock %}
+
+{% block content %}
+<div class="jumbotron mt-5">
+    <h1 class="display-4">¡Hola, clase!</h1>
+    <p class="lead">Esta es la página oficial de nuestro proyecto de Compiladores.</p>
+    <hr class="my-4">
+    <p>Los integrantes del grupo son:</p>
+    <div class="row">
+        <div class="col-md-6">
+            <ul class="list-group">
+                <li class="list-group-item">Libby Arias</li>
+                <li class="list-group-item">Javier Avalos</li>
+                <li class="list-group-item">Vitalino Chitay</li>
+                <li class="list-group-item">Ricardo Guidos</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <ul class="list-group">
+                <li class="list-group-item">Davis Hernandez</li>
+                <li class="list-group-item">Pablo Hernandez</li>
+                <li class="list-group-item">Javier Perez</li>
+            </ul>
+        </div>
+    </div>
+    <a class="btn btn-primary btn-lg mt-4" href="upload" role="button">Compila tú código!</a>
+</div>
+{% endblock %}
