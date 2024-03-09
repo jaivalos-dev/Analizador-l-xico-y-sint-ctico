@@ -1,18 +1,39 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block content %}
 
-{% block content %}
-    
+<style>.hidden { opacity: 0; transition: opacity 1s ease-in-out; }</style>
 
+<h1 class="display-1 text-center mb-5 mt-2">Sube tu archivo</h1>
 
 <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form }}
-    <button type="submit">Subir archivo</button>
+  {% csrf_token %} {{ form }}
+  <br />
+  <button class="btn btn-primary" type="submit">Subir archivo</button>
 </form>
 
 {% if message %}
-    <p>{{ message }}</p>
+<p id="message" class="alert alert-success mt-2">{{ message }}</p>
+{% endif %}
+{% if error %}
+<p id="error" class="alert alert-danger mt-2">{{ error }}</p>
 {% endif %}
 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let message = document.getElementById("message");
+    let error = document.getElementById("error");
+
+
+    if (message) {
+      setTimeout(() => {
+        message.classList.add("hidden");
+      }, 1000);
+    }else if (error) {
+      setTimeout(() => {
+        error.classList.add("hidden");
+      }, 1000);
+    }
+  });
+
+</script>
 
 {% endblock %}
