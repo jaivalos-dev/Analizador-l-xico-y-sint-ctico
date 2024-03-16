@@ -1,0 +1,35 @@
+
+/* body {
+    font-family: monospace;
+    background-color: black;
+    color: white;
+    padding: 10px;
+} */
+
+#console {
+    background-color: black;
+    color: white;
+    padding: 10px;
+    border: 1px solid white;
+    margin-bottom: 10px;
+}
+
+#code {
+    width: 100%;
+    height: 300px;
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    padding: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.line-number {
+    position: absolute;
+    left: 0;
+    width: 30px;
+    text-align: right;
+    color: gray;
+    pointer-events: none;
+}

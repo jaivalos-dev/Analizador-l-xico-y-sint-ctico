@@ -1,12 +1,27 @@
 {% extends 'base.html' %} {% block content %}
 
+<link rel="stylesheet" href="../../staticfiles/consola.css">
+
 <h1 class="display-1 text-center mb-5 mt-2">Escribe tu propio código</h1>
 
 <form method="post">
   {% csrf_token %}
-  <textarea name="code" rows="10" cols="50"></textarea>
-  <br />
+  <div id="console"></div>
+  <div id="code" contenteditable="true"></div>
+
   <button type="submit">Enviar código</button>
 </form>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const codeElement = document.getElementById('code');
+
+    codeElement.addEventListener('input', () => {
+      const code = codeElement.innerText;
+      const lines = code.split('\n');
+      codeElement.innerHTML = lines.map((line, index) => `<div class="line-number">${index + 1}</div>${line}`).join('\n');
+    });
+  });
+</script>
 
 {% endblock %}
