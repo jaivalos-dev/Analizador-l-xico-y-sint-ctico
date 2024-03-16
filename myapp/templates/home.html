@@ -3,11 +3,13 @@
 {% block title %}Home - My Django App{% endblock %}
 
 {% block content %}
+
+<link rel="stylesheet" href="../../staticfiles/estilo.css">
 <div class="jumbotron mt-5">
     <h1 class="display-4">¡Hola, clase!</h1>
     <p class="lead">Esta es la página oficial de nuestro proyecto de Compiladores.</p>
     <hr class="my-4">
-    <p>Los integrantes del grupo son:</p>
+    <p class="colorcito">Los integrantes del grupo son:</p>
     <div class="row">
         <div class="col-md-6">
             <ul class="list-group">
@@ -28,3 +30,4 @@
     <a class="btn btn-primary btn-lg mt-4" href="upload" role="button">Compila tú código!</a>
 </div>
 {% endblock %}
+
