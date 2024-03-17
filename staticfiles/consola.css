@@ -1,35 +1,36 @@
-
-/* body {
-    font-family: monospace;
-    background-color: black;
-    color: white;
-    padding: 10px;
-} */
-
-#console {
-    background-color: black;
-    color: white;
-    padding: 10px;
-    border: 1px solid white;
-    margin-bottom: 10px;
+.editor {
+  display: inline-flex;
+  gap: 10px;
+  font-family: monospace;
+  line-height: 21px;
+  background: #282a3a;
+  border-radius: 2px;
+  padding: 20px 10px;
 }
 
-#code {
-    width: 100%;
-    height: 300px;
-    background-color: black;
-    color: white;
-    border: 1px solid white;
-    padding: 10px;
-    overflow: hidden;
-    position: relative;
+#codigo {
+  line-height: 21px;
+  overflow: auto;
+  padding: 0;
+  border: 0;
+  background: #282a3a;
+  color: #fff;
+  min-width: 500px;
+  width: 100%;
+  outline: none;
+  resize: none;
+}
+.line-numbers {
+  width: 20px;
+  text-align: right;
 }
 
-.line-number {
-    position: absolute;
-    left: 0;
-    width: 30px;
-    text-align: right;
-    color: gray;
-    pointer-events: none;
+.line-numbers span {
+  counter-increment: linenumber;
+}
+
+.line-numbers span::before {
+  content: counter(linenumber);
+  display: block;
+  color: #506882;
 }
