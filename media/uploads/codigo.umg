@@ -1,6 +1,6 @@
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %} {{ form }}
-  <br />
-  <button class="btn btn-primary" type="submit">Subir archivo</button>
-  <hr />
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %} {{ form }}
+  <br />
+  <button class="btn btn-primary" type="submit">Subir archivo</button>
+  <hr />
 </form>
