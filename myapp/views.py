@@ -16,10 +16,10 @@ def upload_file(request):
         form = FileUploadForm(request.POST, request.FILES)
         if form.is_valid():
             file = request.FILES['file']
-            if not file.name.endswith('.umg'):
+            if not file.name.endswith('.nothyp'):
                 return render(request, 'upload_file.html', {
                     'form': FileUploadForm(),
-                    'error': 'File extension must be .umg'
+                    'error': 'File extension must be .nothyp'
                 })
             else:
                 file_path = os.path.join('media', 'uploads', file.name)

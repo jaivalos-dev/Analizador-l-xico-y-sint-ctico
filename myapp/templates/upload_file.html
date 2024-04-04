@@ -1,5 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 
+<meta charset="UTF-8">
+
 <style>
   .hidden {
     opacity: 0;
@@ -41,7 +43,8 @@
       </div>
     </div>
   </div>
-  <button class="btn btn-primary" type="submit">Guardar cambios</button>
+  <button class="btn btn-primary" type="submit">Analisis léxico</button>
+  <button class="btn btn-secondary" type="submit">Analisis Sintáctico</button>
 </form>
 
 {% if message %}
