@@ -43,9 +43,12 @@
       </div>
     </div>
   </div>
-  <button class="btn btn-primary" type="submit">Analisis léxico</button>
-  <button class="btn btn-secondary" type="submit">Analisis Sintáctico</button>
 </form>
+
+<p id="codigo2" style="display: none;"></p>
+
+<button class="btn btn-primary" type="button" onclick="analisisLexico()">Analisis léxico</button>
+<button class="btn btn-secondary" type="button">Analisis Sintáctico</button>
 
 {% if message %}
 <p id="message" class="alert alert-success mt-2">{{ message }}</p>
@@ -54,5 +57,27 @@
 {% endif %}
 
 <script src="../../staticfiles/consola.js"></script>
+<script>
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const codigo = document.getElementById('codigo');
+    const codigo2 = document.getElementById('codigo2');
+
+    codigo.addEventListener('input', function() {
+      codigo2.innerHTML = codigo.value;
+    });
+  });
+
+  function analisisLexico(){
+
+    const codigo = document.getElementById('codigo');
+    const codigo2 = document.getElementById('codigo2');
+    codigo2.innerHTML = codigo.value;
+
+    let script = document.createElement('script');
+    script.src = '../../staticfiles/lexico.js';
+    document.head.appendChild(script)
+  }
+</script>
 
 {% endblock %}
