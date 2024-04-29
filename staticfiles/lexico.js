@@ -11,24 +11,24 @@ const expresionesRegulares = {
 
     //Operadores
     //Asignacion
-    asignacion: /^=$/,
+    asignacion: /^\=$/,
     suma: /^\+$/,
     resta: /^\-$/,
     multiplicacion: /^\*$/,
-    division: /^\$/,
+    division: /^\/$/,
     divisionentera: /^\/\/$/,
-    modulo: /^%$/,
+    modulo: /^\%$/,
     parIzquierdo: /^\($/,
     parDerecho: /^\)$/,
     exponente: /^\*\*$/,
     //Igualdad
-    igual: /^--$/,
+    igual: /^\-\-$/,
     diferente: /^\/-$/,	
     //Relacionales
-    menor: /^<$/,
-    mayor: /^>$/,
-    menorIgual: /^<=$/,
-    mayorIgual: /^>=$/,
+    menor: /^\<$/,
+    mayor: /^\>$/,
+    menorIgual: /^\<\=$/,
+    mayorIgual: /^\>\=$/,
 
     // Agrega palabras reservadas
 
@@ -54,21 +54,51 @@ const expresionesRegulares = {
     // ciclos
     // furzy
     furzy: /^(furzy)$/,
+    in: /^(in)$/,
     // wholizy
     wholizy: /^(wholizy)$/,
+    du: /^(du)$/,
     pesszy: /^(pesszy)$/,
     cuntonaizy: /^(cuntonaizy)$/,
-    palabrasReservadas: /^(ofzy|else|while|for|function|var|let|const)$/,
+
+    //Clases
+    clesszy: /^(clesszy)$/,
+    silfzy: /^(silfzy)$/,
+    inicializador: /^(__onotzy__)$/,
+    niwzy: /^(niwzy)$/,
+    super: /^(super)$/,
+    cls: /^(cls)$/,
+    argumentos: /^(\*args)$/,
+    kwargumentos: /^(\*\*kwargs)$/,
+    ritarnzy: /^(ritarnzy)$/,
+    admiracionA: /^(!)$/,
+    admiracionC: /^(\¡)$/,
+    cellzy: /^(__cellzy__)$/,
+   
+    //Simbolos faltantes
+    dosPuntos: /^(\:)$/,
+    puntoComa: /^(\;)$/,
+    punto: /^(\.)$/,
+    coma: /^(\,)$/,
+    corcheteIzquierdo: /^(\[)$/,
+    corcheteDerecho: /^(\])$/,
+    llaveIzquierda: /^(\{)$/,
+    llaveDerecha: /^(\})$/,
+    barraInvertida: /^(\\)$/,
+    barraVertical: /^(\|)$/,
+    arroba: /^(\@)$/,
+    numeral: /^(\#)$/,
+    ampersand: /^(\&)$/,
+
+    // palabrasReservadas: /^(ofzy|else|while|for|function|var|let|const)$/,
 
 };
-
-
 
 //Función principal
 function lexico(input) {
     const tokens = input
         .replace(/\s+/g, '') // Eliminar espacios en blanco
-        .match(/(\d+|\-\-|\/\-|\+|\-|\*|\/|\(|\)|\^|[a-zA-Z_]\w*|\S)/g); // Identificar números, operadores, identificadores y otros caracteres
+        .match(/(\d+|\-\-|\/\-|\+|\-|\*|\/|\(|\)|\^|\"|\!|\¡|\@|\#|\%|\&|\=|\[|\]|\{|\}|\\|\||\:|\;|\'|\<|\>|\.|(clesszy)|(difzy)|[a-zA-Z_]\w*|\_|\S)/g); // Identificar números, operadores, identificadores y otros caracteres
 
     const tokenTypes = tokens.map(token => {
         if (expresionesRegulares.numeros.test(token)) {
@@ -137,12 +167,66 @@ function lexico(input) {
             return { type: 't_ilofzy', value: token }; // Sentencia ilofzy
         } else if (expresionesRegulares.furzy.test(token)) {
             return { type: 't_furzy', value: token }; // Sentencia furzy
+        } else if (expresionesRegulares.in.test(token)){
+            return { type: 't_in', value: token };
         } else if (expresionesRegulares.wholizy.test(token)) {
             return { type: 't_wholizy', value: token }; // Sentencia wholizy
+        } else if (expresionesRegulares.du.test(token)){
+            return { type: 't_du', value: token };
         } else if (expresionesRegulares.pesszy.test(token)) {
             return { type: 't_pesszy', value: token }; // Sentencia pesszy
         } else if (expresionesRegulares.cuntonaizy.test(token)) {
             return { type: 't_cuntonaizy', value: token }; // Sentencia cuntonaizy
+        } else if (expresionesRegulares.clesszy.test(token)) {
+            return { type: 't_clesszy', value: token }; // Clase clesszy
+        } else if (expresionesRegulares.silfzy.test(token)) {
+            return { type: 't_silfzy', value: token }; // Clase silfzy
+        } else if (expresionesRegulares.inicializador.test(token)) {
+            return { type: 't_inicializador', value: token }; // Inicializador
+        } else if (expresionesRegulares.niwzy.test(token)) {
+            return { type: 't_niwzy', value: token }; // Palabra reservada niwzy
+        } else if (expresionesRegulares.super.test(token)) {
+            return { type: 't_super', value: token }; // Palabra reservada super
+        } else if (expresionesRegulares.cls.test(token)) {
+            return { type: 't_cls', value: token }; // Palabra reservada cls
+        } else if (expresionesRegulares.argumentos.test(token)) {
+            return { type: 't_argumentos', value: token }; // Argumentos
+        } else if (expresionesRegulares.kwargumentos.test(token)) {
+            return { type: 't_kwargumentos', value: token }; // Argumentos con clave
+        } else if (expresionesRegulares.ritarnzy.test(token)) {
+            return { type: 't_ritarnzy', value: token }; // Palabra reservada ritarnzy
+        } else if (expresionesRegulares.admiracionA.test(token)) {
+            return { type: 't_admiracionA', value: token }; // Signo de admiración
+        } else if (expresionesRegulares.admiracionC.test(token)) {
+            return { type: 't_admiracionC', value: token }; // Signo de admiración
+        } else if (expresionesRegulares.cellzy.test(token)) {
+            return { type: 't_cellzy', value: token }; // Inicializador cellzy
+        } else if (expresionesRegulares.dosPuntos.test(token)) {
+            return { type: 't_dos_puntos', value: token }; // Dos puntos
+        } else if (expresionesRegulares.puntoComa.test(token)) {
+            return { type: 't_punto_coma', value: token }; // Punto y coma
+        } else if (expresionesRegulares.punto.test(token)) {
+            return { type: 't_punto', value: token }; // Punto
+        } else if (expresionesRegulares.coma.test(token)) {
+            return { type: 't_coma', value: token }; // Coma
+        } else if (expresionesRegulares.corcheteIzquierdo.test(token)) {
+            return { type: 't_corchete_izquierdo', value: token }; // Corchete izquierdo
+        } else if (expresionesRegulares.corcheteDerecho.test(token)) {
+            return { type: 't_corchete_derecho', value: token }; // Corchete derecho
+        } else if (expresionesRegulares.llaveIzquierda.test(token)) {
+            return { type: 't_llave_izquierda', value: token }; // Llave izquierda
+        } else if (expresionesRegulares.llaveDerecha.test(token)) {
+            return { type: 't_llave_derecha', value: token }; // Llave derecha
+        } else if (expresionesRegulares.barraInvertida.test(token)) {
+            return { type: 't_barra_invertida', value: token }; // Barra invertida
+        } else if (expresionesRegulares.barraVertical.test(token)) {
+            return { type: 't_barra_vertical', value: token }; // Barra vertical
+        } else if (expresionesRegulares.arroba.test(token)) {
+            return { type: 't_arroba', value: token }; // Arroba
+        } else if (expresionesRegulares.numeral.test(token)) {
+            return { type: 't_numeral', value: token }; // Numeral
+        } else if (expresionesRegulares.ampersand.test(token)) {
+            return { type: 't_ampersand', value: token }; // Ampersand
         } else if (expresionesRegulares.identificadores.test(token)) {
             return { type: 't_identificador', value: token }; // Identificador
         } else {

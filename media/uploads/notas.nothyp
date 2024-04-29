@@ -1,1 +1,9 @@
-if (x > 0) { y = x; } ~"
+ clesszy  MiClase: 
+  difzy  __ niwzy __! clszy, x, y! 
+ ritarnzy  x + y
+
+objeto = MiClase¡! 
+
+
+resultado = objeto¡3, 5! 
+prontzy¡resultado!
