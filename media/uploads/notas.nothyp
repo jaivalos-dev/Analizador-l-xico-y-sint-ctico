@@ -4,6 +4,8 @@
 
 objeto = MiClase¡! 
 
+prueba = "Hola mundo" 
+
 
 resultado = objeto¡3, 5! 
 prontzy¡resultado!

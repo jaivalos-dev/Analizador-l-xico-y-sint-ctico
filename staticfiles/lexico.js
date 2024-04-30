@@ -114,6 +114,9 @@ const expresionesRegulares = {
 
   //Identificadores
   identificadores: /^[a-zA-Z_]\w*$/,
+
+  //comentario
+  comentario: /^(")([a-zA-Z_0-9])(")$/,
 };
 
 //Función principal
@@ -121,12 +124,14 @@ function lexico(input) {
   const tokens = input
     .replace(/\s+/g, "") // Eliminar espacios en blanco
     .match(
-        /(\d+|\*\*|\-\-|\/\-|\+\=|\+|\-\=|\-|(\*args)|(\*\*kwargs)|\*|\/|\(|\)|\^|\"|\!|\¡|\@|\#|\%|\&|\=|\[|\]|\{|\}|\\|\||\:|\;|\'|\<\=|\>\=|\<|\>|\.|\,|\?|\¿|(clesszy)|(difzy)|(__onotzy__)|(silfzy)|(wholizy)|(prontzy)|(furzy)|(in)|(du)|(ontzy)|(rtszy)|(fluetzy)|(cumplixzy)|(lostzy)|(taplizy)|(sitzy)|(doctzy)|(__niwzy__)|(super)|(clszy)|(ritarnzy)|(traplizy)|(__cellzy__)|(ompatzy)|(pesszy)|(endzy)|(ompurtzy)|(briekzy)|(rengizy)|(dilzy)|(ixciptzy)|(troyzy)|(eszy)|(fonellyzy)|(frumzy)|(felsizy)|(strongzy)|(rew-strongzy)|(fstrongzy)|(nunizy)|(traizy)|(ofzy)|(ilofzy)|(ilsizy)|(cuntonaizy)|[a-zA-Z_]\w*|\_|\S)/g
+        /(\d+|(")([a-zA-Z_0-9])(")|\*\*|\-\-|\/\-|\+\=|\+|\-\=|\-|(\*args)|(\*\*kwargs)|\*|\/|\(|\)|\^|\"|\!|\¡|\@|\#|\%|\&|\=|\[|\]|\{|\}|\\|\||\:|\;|\'|\<\=|\>\=|\<|\>|\.|\,|\?|\¿|(clesszy)|(difzy)|(__onotzy__)|(silfzy)|(wholizy)|(prontzy)|(furzy)|(in)|(du)|(ontzy)|(rtszy)|(fluetzy)|(cumplixzy)|(lostzy)|(taplizy)|(sitzy)|(doctzy)|(__niwzy__)|(super)|(clszy)|(ritarnzy)|(traplizy)|(__cellzy__)|(ompatzy)|(pesszy)|(endzy)|(ompurtzy)|(briekzy)|(rengizy)|(dilzy)|(ixciptzy)|(troyzy)|(eszy)|(fonellyzy)|(frumzy)|(felsizy)|(strongzy)|(rew-strongzy)|(fstrongzy)|(nunizy)|(traizy)|(ofzy)|(ilofzy)|(ilsizy)|(cuntonaizy)|[a-zA-Z_]\w*|\_|\S)/g
       ); // Identificar números, operadores, identificadores y otros caracteres
 
   const tokenTypes = tokens.map((token) => {
     if (expresionesRegulares.numeros.test(token)) {
       return { type: "t_num", value: parseInt(token, 10) }; // Número
+    } else if (expresionesRegulares.comentario.test(token)) {
+      return { type: "t_comentario", value: token }; // Comentario
     } else if (expresionesRegulares.asignacion.test(token)) {
       return { type: "t_asignacion", value: token }; // Operador de asignación
     } else if (expresionesRegulares.suma.test(token)) {
