@@ -13,4 +13,12 @@
   }
   
   /* Agrega más reglas de estilo según sea necesario para otros tipos de tokens */
-  
+  /* Define colores para diferentes tipos de tokens */
+.t_num {
+  color: blue; /* Color azul para números */
+}
+
+.t_asignacion {
+  color: green; /* Color verde para operadores de asignación */
+}
+

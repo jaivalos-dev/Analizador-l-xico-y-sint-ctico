@@ -45,32 +45,32 @@ const expresionesRegulares = {
 
   // Sentencias de control
   // condicional
-  ofzy: /^(ofzy)$/,
-  ilsizy: /^(ilsizy)$/,
-  ilofzy: /^(ilofzy)$/,
+  ofzy: /^(ofzy)$/i,
+  ilsizy: /^(ilsizy)$/i,
+  ilofzy: /^(ilofzy)$/i,
   // ciclos
   // furzy
-  furzy: /^(furzy)$/,
-  in: /^(in)$/,
+  furzy: /^(furzy)$/i,
+  in: /^(in)$/i,
   // wholizy
-  wholizy: /^(wholizy)$/,
-  du: /^(du)$/,
-  pesszy: /^(pesszy)$/,
-  cuntonaizy: /^(cuntonaizy)$/,
+  wholizy: /^(wholizy)$/i,
+  du: /^(du)$/i,
+  pesszy: /^(pesszy)$/i,
+  cuntonaizy: /^(cuntonaizy)$/i,
 
   //Clases
-  clesszy: /^(clesszy)$/,
-  silfzy: /^(silfzy)$/,
-  inicializador: /^(__onotzy__)$/,
-  niwzy: /^(__niwzy__)$/,
-  super: /^(super)$/,
-  clszy: /^(clszy)$/,
-  argumentos: /^(\*args)$/,
-  kwargumentos: /^(\*\*kwargs)$/,
-  ritarnzy: /^(ritarnzy)$/,
-  admiracionC: /^(!)$/,
-  admiracionA: /^(\¡)$/,
-  cellzy: /^(__cellzy__)$/,
+  clesszy: /^(clesszy)$/i,
+  silfzy: /^(silfzy)$/i,
+  inicializador: /^(__onotzy__)$/i,
+  niwzy: /^(__niwzy__)$/i,
+  super: /^(super)$/i,
+  clszy: /^(clszy)$/i,
+  argumentos: /^(\*args)$/i,
+  kwargumentos: /^(\*\*kwargs)$/i,
+  ritarnzy: /^(ritarnzy)$/i,
+  admiracionC: /^(!)$/i,
+  admiracionA: /^(\¡)$/i,
+  cellzy: /^(__cellzy__)$/i,
 
   //Simbolos faltantes
   dosPuntos: /^(\:)$/,
