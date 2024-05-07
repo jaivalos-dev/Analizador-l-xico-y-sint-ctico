@@ -1,0 +1,16 @@
+/* Ejemplo de estilos para resaltado de sintaxis personalizado */
+
+.keyword {
+    color: blue; /* Color para palabras clave */
+  }
+  
+  .identifier {
+    color: green; /* Color para identificadores */
+  }
+  
+  .comment {
+    color: gray; /* Color para comentarios */
+  }
+  
+  /* Agrega más reglas de estilo según sea necesario para otros tipos de tokens */
+  
