@@ -2,9 +2,6 @@ const codigojs = document.getElementById("codigo2").textContent;
 
 console.log(codigojs);
 
-// Archivo principal
-
-// expresionesRegulares
 const expresionesRegulares = {
   //Números
   numeros: /^\d+$/,
@@ -48,32 +45,32 @@ const expresionesRegulares = {
 
   // Sentencias de control
   // condicional
-  ofzy: /^(ofzy)$/,
-  ilsizy: /^(ilsizy)$/,
-  ilofzy: /^(ilofzy)$/,
+  ofzy: /^(ofzy)$/i,
+  ilsizy: /^(ilsizy)$/i,
+  ilofzy: /^(ilofzy)$/i,
   // ciclos
   // furzy
-  furzy: /^(furzy)$/,
-  in: /^(in)$/,
+  furzy: /^(furzy)$/i,
+  in: /^(in)$/i,
   // wholizy
-  wholizy: /^(wholizy)$/,
-  du: /^(du)$/,
-  pesszy: /^(pesszy)$/,
-  cuntonaizy: /^(cuntonaizy)$/,
+  wholizy: /^(wholizy)$/i,
+  du: /^(du)$/i,
+  pesszy: /^(pesszy)$/i,
+  cuntonaizy: /^(cuntonaizy)$/i,
 
   //Clases
-  clesszy: /^(clesszy)$/,
-  silfzy: /^(silfzy)$/,
-  inicializador: /^(__onotzy__)$/,
-  niwzy: /^(__niwzy__)$/,
-  super: /^(super)$/,
-  clszy: /^(clszy)$/,
-  argumentos: /^(\*args)$/,
-  kwargumentos: /^(\*\*kwargs)$/,
-  ritarnzy: /^(ritarnzy)$/,
-  admiracionC: /^(!)$/,
-  admiracionA: /^(\¡)$/,
-  cellzy: /^(__cellzy__)$/,
+  clesszy: /^(clesszy)$/i,
+  silfzy: /^(silfzy)$/i,
+  inicializador: /^(__onotzy__)$/i,
+  niwzy: /^(__niwzy__)$/i,
+  super: /^(super)$/i,
+  clszy: /^(clszy)$/i,
+  argumentos: /^(\*args)$/i,
+  kwargumentos: /^(\*\*kwargs)$/i,
+  ritarnzy: /^(ritarnzy)$/i,
+  admiracionC: /^(!)$/i,
+  admiracionA: /^(\¡)$/i,
+  cellzy: /^(__cellzy__)$/i,
 
   //Simbolos faltantes
   dosPuntos: /^(\:)$/,
@@ -119,194 +116,290 @@ const expresionesRegulares = {
   comentario: /^(")([a-zA-Z_0-9])(")$/,
 };
 
-//Función principal
 function lexico(input) {
+
+  // Dividir la entrada en líneas
+  const lines = input.split('\n');
+
   const tokens = input
     .replace(/\s+/g, "") // Eliminar espacios en blanco
     .match(
         /(\d+|(")([a-zA-Z_0-9])(")|\*\*|\-\-|\/\-|\+\=|\+|\-\=|\-|(\*args)|(\*\*kwargs)|\*|\/|\(|\)|\^|\"|\!|\¡|\@|\#|\%|\&|\=|\[|\]|\{|\}|\\|\||\:|\;|\'|\<\=|\>\=|\<|\>|\.|\,|\?|\¿|(clesszy)|(difzy)|(__onotzy__)|(silfzy)|(wholizy)|(prontzy)|(furzy)|(in)|(du)|(ontzy)|(rtszy)|(fluetzy)|(cumplixzy)|(lostzy)|(taplizy)|(sitzy)|(doctzy)|(__niwzy__)|(super)|(clszy)|(ritarnzy)|(traplizy)|(__cellzy__)|(ompatzy)|(pesszy)|(endzy)|(ompurtzy)|(briekzy)|(rengizy)|(dilzy)|(ixciptzy)|(troyzy)|(eszy)|(fonellyzy)|(frumzy)|(felsizy)|(strongzy)|(rew-strongzy)|(fstrongzy)|(nunizy)|(traizy)|(ofzy)|(ilofzy)|(ilsizy)|(cuntonaizy)|[a-zA-Z_]\w*|\_|\S)/g
       ); // Identificar números, operadores, identificadores y otros caracteres
+  // Dividir cada línea en tokens y registrar el número de línea para cada token
+  const tokensWithLine = lines.flatMap((line, lineNumber) => {
+    return line.match(/(\d+|\*\*|\-\-|\/\-|\+\=|\+|\-\=|\-|(\*args)|(\*\*kwargs)|\*|\/|\(|\)|\^|\"|\!|\¡|\@|\#|\%|\&|\=|\[|\]|\{|\}|\\|\||\:|\;|\'|\<\=|\>\=|\<|\>|\.|\,|\?|\¿|(clesszy)|(difzy)|(__onotzy__)|(silfzy)|(wholizy)|(prontzy)|(furzy)|(in)|(du)|(ontzy)|(rtszy)|(fluetzy)|(cumplixzy)|(lostzy)|(taplizy)|(sitzy)|(doctzy)|(__niwzy__)|(super)|(clszy)|(ritarnzy)|(traplizy)|(__cellzy__)|(ompatzy)|(pesszy)|(endzy)|(ompurtzy)|(briekzy)|(rengizy)|(dilzy)|(ixciptzy)|(troyzy)|(eszy)|(fonellyzy)|(frumzy)|(felsizy)|(strongzy)|(rew-strongzy)|(fstrongzy)|(nunizy)|(traizy)|(ofzy)|(ilofzy)|(ilsizy)|(cuntonaizy)|[a-zA-Z_]\w*|\_|\S)/g).map(token => ({ token, lineNumber: lineNumber + 1 }));
+  });
 
-  const tokenTypes = tokens.map((token) => {
+  // Identificar el tipo de cada token y retornarlos
+  const tokenTypes = tokensWithLine.map(({ token, lineNumber }) => {
     if (expresionesRegulares.numeros.test(token)) {
-      return { type: "t_num", value: parseInt(token, 10) }; // Número
+      return { type: "t_num", value: parseInt(token, 10), lineNumber  }; // Número
     } else if (expresionesRegulares.comentario.test(token)) {
-      return { type: "t_comentario", value: token }; // Comentario
+      return { type: "t_comentario", value: token, lineNumber }; // Comentario
     } else if (expresionesRegulares.asignacion.test(token)) {
-      return { type: "t_asignacion", value: token }; // Operador de asignación
+      return { type: "t_asignacion", value: token, lineNumber }; // Operador de asignación
     } else if (expresionesRegulares.suma.test(token)) {
-      return { type: "t_suma", value: token }; // Operador de suma
+      return { type: "t_suma", value: token, lineNumber }; // Operador de suma
     } else if (expresionesRegulares.resta.test(token)) {
-      return { type: "t_resta", value: token }; // Operador de resta
+      return { type: "t_resta", value: token, lineNumber }; // Operador de resta
     } else if (expresionesRegulares.multiplicacion.test(token)) {
-      return { type: "t_multiplicacion", value: token }; // Operador de multiplicación
+      return { type: "t_multiplicacion", value: token, lineNumber }; // Operador de multiplicación
     } else if (expresionesRegulares.division.test(token)) {
-      return { type: "t_division", value: token }; // Operador de división
+      return { type: "t_division", value: token, lineNumber }; // Operador de división
     } else if (expresionesRegulares.divisionentera.test(token)) {
-      return { type: "t_division_entera", value: token }; // Operador de división entera
+      return { type: "t_division_entera", value: token, lineNumber }; // Operador de división entera
     } else if (expresionesRegulares.modulo.test(token)) {
-      return { type: "t_modulo", value: token }; // Operador de módulo
+      return { type: "t_modulo", value: token, lineNumber }; // Operador de módulo
     } else if (expresionesRegulares.parIzquierdo.test(token)) {
-      return { type: "t_par_izquierdo", value: token }; // Paréntesis izquierdo
+      return { type: "t_par_izquierdo", value: token, lineNumber }; // Paréntesis izquierdo
     } else if (expresionesRegulares.parDerecho.test(token)) {
-      return { type: "t_par_derecho", value: token }; // Paréntesis derecho
+      return { type: "t_par_derecho", value: token, lineNumber }; // Paréntesis derecho
     } else if (expresionesRegulares.exponente.test(token)) {
-      return { type: "t_exponente", value: token }; // Operador de potencia
+      return { type: "t_exponente", value: token, lineNumber }; // Operador de potencia
     } else if (expresionesRegulares.igual.test(token)) {
-      return { type: "t_igual", value: token }; // Operador de igualdad
+      return { type: "t_igual", value: token, lineNumber }; // Operador de igualdad
     } else if (expresionesRegulares.diferente.test(token)) {
-      return { type: "t_diferente", value: token }; // Operador de diferente
+      return { type: "t_diferente", value: token, lineNumber }; // Operador de diferente
     } else if (expresionesRegulares.menor.test(token)) {
-      return { type: "t_menor", value: token }; // Operador de menor que
+      return { type: "t_menor", value: token, lineNumber }; // Operador de menor que
     } else if (expresionesRegulares.mayor.test(token)) {
-      return { type: "t_mayor", value: token }; // Operador de mayor que
+      return { type: "t_mayor", value: token, lineNumber }; // Operador de mayor que
     } else if (expresionesRegulares.menorIgual.test(token)) {
-      return { type: "t_menor_igual", value: token }; // Operador de menor o igual que
+      return { type: "t_menor_igual", value: token, lineNumber }; // Operador de menor o igual que
     } else if (expresionesRegulares.mayorIgual.test(token)) {
-      return { type: "t_mayor_igual", value: token }; // Operador de mayor o igual que
+      return { type: "t_mayor_igual", value: token, lineNumber }; // Operador de mayor o igual que
     } else if (expresionesRegulares.ontzy.test(token)) {
-      return { type: "t_ontzy", value: token }; // Tipo de dato ontzy
+      return { type: "t_ontzy", value: token, lineNumber }; // Tipo de dato ontzy
     } else if (expresionesRegulares.fluetzy.test(token)) {
-      return { type: "t_fluetzy", value: token }; // Tipo de dato fluetzy
+      return { type: "t_fluetzy", value: token, lineNumber }; // Tipo de dato fluetzy
     } else if (expresionesRegulares.cumplixzy.test(token)) {
-      return { type: "t_cumplixzy", value: token }; // Tipo de dato cumplixzy
+      return { type: "t_cumplixzy", value: token, lineNumber }; // Tipo de dato cumplixzy
     } else if (expresionesRegulares.traizy.test(token)) {
-      return { type: "t_traizy", value: token }; // Tipo de dato traizy
+      return { type: "t_traizy", value: token, lineNumber }; // Tipo de dato traizy
     } else if (expresionesRegulares.felsizy.test(token)) {
-      return { type: "t_felsizy", value: token }; // Tipo de dato felsizy
+      return { type: "t_felsizy", value: token, lineNumber }; // Tipo de dato felsizy
     } else if (expresionesRegulares.strongzy.test(token)) {
-      return { type: "t_strongzy", value: token }; // Tipo de dato strongzy
+      return { type: "t_strongzy", value: token, lineNumber }; // Tipo de dato strongzy
     } else if (expresionesRegulares.rewstrongzy.test(token)) {
-      return { type: "t_rewstrongzy", value: token }; // Tipo de dato rew-strongzy
+      return { type: "t_rewstrongzy", value: token, lineNumber }; // Tipo de dato rew-strongzy
     } else if (expresionesRegulares.fstrongzy.test(token)) {
-      return { type: "t_fstrongzy", value: token }; // Tipo de dato fstrongzy
+      return { type: "t_fstrongzy", value: token, lineNumber }; // Tipo de dato fstrongzy
     } else if (expresionesRegulares.lostzy.test(token)) {
-      return { type: "t_lostzy", value: token }; // Tipo de dato lostzy
+      return { type: "t_lostzy", value: token, lineNumber }; // Tipo de dato lostzy
     } else if (expresionesRegulares.traplizy.test(token)) {
-      return { type: "t_traplizy", value: token }; // Tipo de dato traplizy
+      return { type: "t_traplizy", value: token, lineNumber }; // Tipo de dato traplizy
     } else if (expresionesRegulares.sitzy.test(token)) {
-      return { type: "t_sitzy", value: token }; // Tipo de dato sitzy
+      return { type: "t_sitzy", value: token, lineNumber }; // Tipo de dato sitzy
     } else if (expresionesRegulares.nunizy.test(token)) {
-      return { type: "t_nunizy", value: token }; // Tipo de dato nunizy
+      return { type: "t_nunizy", value: token, lineNumber }; // Tipo de dato nunizy
     } else if (expresionesRegulares.ofzy.test(token)) {
-      return { type: "t_ofzy", value: token }; // Sentencia ofzy
+      return { type: "t_ofzy", value: token, lineNumber }; // Sentencia ofzy
     } else if (expresionesRegulares.ilsizy.test(token)) {
-      return { type: "t_ilsizy", value: token }; // Sentencia ilsizy
+      return { type: "t_ilsizy", value: token, lineNumber }; // Sentencia ilsizy
     } else if (expresionesRegulares.ilofzy.test(token)) {
-      return { type: "t_ilofzy", value: token }; // Sentencia ilofzy
+      return { type: "t_ilofzy", value: token, lineNumber }; // Sentencia ilofzy
     } else if (expresionesRegulares.furzy.test(token)) {
-      return { type: "t_furzy", value: token }; // Sentencia furzy
+      return { type: "t_furzy", value: token, lineNumber }; // Sentencia furzy
     } else if (expresionesRegulares.in.test(token)) {
-      return { type: "t_in", value: token };
+      return { type: "t_in", value: token, lineNumber };
     } else if (expresionesRegulares.wholizy.test(token)) {
-      return { type: "t_wholizy", value: token }; // Sentencia wholizy
+      return { type: "t_wholizy", value: token, lineNumber }; // Sentencia wholizy
     } else if (expresionesRegulares.du.test(token)) {
-      return { type: "t_du", value: token };
+      return { type: "t_du", value: token, lineNumber };
     } else if (expresionesRegulares.pesszy.test(token)) {
-      return { type: "t_pesszy", value: token }; // Sentencia pesszy
+      return { type: "t_pesszy", value: token, lineNumber }; // Sentencia pesszy
     } else if (expresionesRegulares.cuntonaizy.test(token)) {
-      return { type: "t_cuntonaizy", value: token }; // Sentencia cuntonaizy
+      return { type: "t_cuntonaizy", value: token, lineNumber }; // Sentencia cuntonaizy
     } else if (expresionesRegulares.clesszy.test(token)) {
-      return { type: "t_clesszy", value: token }; // Clase clesszy
+      return { type: "t_clesszy", value: token, lineNumber }; // Clase clesszy
     } else if (expresionesRegulares.silfzy.test(token)) {
-      return { type: "t_silfzy", value: token }; // Clase silfzy
+      return { type: "t_silfzy", value: token, lineNumber }; // Clase silfzy
     } else if (expresionesRegulares.inicializador.test(token)) {
-      return { type: "t_inicializador", value: token }; // Inicializador
+      return { type: "t_inicializador", value: token, lineNumber }; // Inicializador
     } else if (expresionesRegulares.niwzy.test(token)) {
-      return { type: "t_niwzy", value: token }; // Palabra reservada niwzy
+      return { type: "t_niwzy", value: token, lineNumber }; // Palabra reservada niwzy
     } else if (expresionesRegulares.super.test(token)) {
-      return { type: "t_super", value: token }; // Palabra reservada super
+      return { type: "t_super", value: token, lineNumber }; // Palabra reservada super
     } else if (expresionesRegulares.clszy.test(token)) {
-      return { type: "t_clszy", value: token }; // Palabra reservada cls
+      return { type: "t_clszy", value: token, lineNumber }; // Palabra reservada cls
     } else if (expresionesRegulares.argumentos.test(token)) {
-      return { type: "t_argumentos", value: token }; // Argumentos
+      return { type: "t_argumentos", value: token, lineNumber }; // Argumentos
     } else if (expresionesRegulares.kwargumentos.test(token)) {
-      return { type: "t_kwargumentos", value: token }; // Argumentos con clave
+      return { type: "t_kwargumentos", value: token, lineNumber }; // Argumentos con clave
     } else if (expresionesRegulares.ritarnzy.test(token)) {
-      return { type: "t_ritarnzy", value: token }; // Palabra reservada ritarnzy
+      return { type: "t_ritarnzy", value: token, lineNumber }; // Palabra reservada ritarnzy
     } else if (expresionesRegulares.admiracionA.test(token)) {
-      return { type: "t_admiracionA", value: token }; // Signo de admiración
+      return { type: "t_admiracionA", value: token, lineNumber }; // Signo de admiración
     } else if (expresionesRegulares.admiracionC.test(token)) {
-      return { type: "t_admiracionC", value: token }; // Signo de admiración
+      return { type: "t_admiracionC", value: token, lineNumber }; // Signo de admiración
     } else if (expresionesRegulares.cellzy.test(token)) {
-      return { type: "t_cellzy", value: token }; // Inicializador cellzy
+      return { type: "t_cellzy", value: token, lineNumber }; // Inicializador cellzy
     } else if (expresionesRegulares.dosPuntos.test(token)) {
-      return { type: "t_dos_puntos", value: token }; // Dos puntos
+      return { type: "t_dos_puntos", value: token, lineNumber }; // Dos puntos
     } else if (expresionesRegulares.puntoComa.test(token)) {
-      return { type: "t_punto_coma", value: token }; // Punto y coma
+      return { type: "t_punto_coma", value: token, lineNumber }; // Punto y coma
     } else if (expresionesRegulares.punto.test(token)) {
-      return { type: "t_punto", value: token }; // Punto
+      return { type: "t_punto", value: token, lineNumber }; // Punto
     } else if (expresionesRegulares.coma.test(token)) {
-      return { type: "t_coma", value: token }; // Coma
+      return { type: "t_coma", value: token, lineNumber }; // Coma
     } else if (expresionesRegulares.corcheteIzquierdo.test(token)) {
-      return { type: "t_corchete_izquierdo", value: token }; // Corchete izquierdo
+      return { type: "t_corchete_izquierdo", value: token, lineNumber }; // Corchete izquierdo
     } else if (expresionesRegulares.corcheteDerecho.test(token)) {
-      return { type: "t_corchete_derecho", value: token }; // Corchete derecho
+      return { type: "t_corchete_derecho", value: token, lineNumber }; // Corchete derecho
     } else if (expresionesRegulares.llaveIzquierda.test(token)) {
-      return { type: "t_llave_izquierda", value: token }; // Llave izquierda
+      return { type: "t_llave_izquierda", value: token, lineNumber }; // Llave izquierda
     } else if (expresionesRegulares.llaveDerecha.test(token)) {
-      return { type: "t_llave_derecha", value: token }; // Llave derecha
+      return { type: "t_llave_derecha", value: token, lineNumber }; // Llave derecha
     } else if (expresionesRegulares.barraInvertida.test(token)) {
-      return { type: "t_barra_invertida", value: token }; // Barra invertida
+      return { type: "t_barra_invertida", value: token, lineNumber }; // Barra invertida
     } else if (expresionesRegulares.barraVertical.test(token)) {
-      return { type: "t_barra_vertical", value: token }; // Barra vertical
+      return { type: "t_barra_vertical", value: token, lineNumber }; // Barra vertical
     } else if (expresionesRegulares.arroba.test(token)) {
-      return { type: "t_arroba", value: token }; // Arroba
+      return { type: "t_arroba", value: token, lineNumber }; // Arroba
     } else if (expresionesRegulares.numeral.test(token)) {
-      return { type: "t_numeral", value: token }; // Numeral
+      return { type: "t_numeral", value: token, lineNumber }; // Numeral
     } else if (expresionesRegulares.ampersand.test(token)) {
-      return { type: "t_ampersand", value: token }; // Ampersand
+      return { type: "t_ampersand", value: token, lineNumber }; // Ampersand
     } else if (expresionesRegulares.prontzy.test(token)) {
-        return { type: "t_prontzy", value: token }; // Función prontzy
+        return { type: "t_prontzy", value: token, lineNumber }; // Función prontzy
     } else if (expresionesRegulares.rtszy.test(token)) {
-        return { type: "t_rtszy", value: token }; // Función rtszy
+        return { type: "t_rtszy", value: token, lineNumber }; // Función rtszy
     } else if (expresionesRegulares.fluetzy.test(token)) {
-        return { type: "t_fluetzy", value: token }; // Función fluetzy
+        return { type: "t_fluetzy", value: token, lineNumber }; // Función fluetzy
     } else if (expresionesRegulares.lostzy.test(token)) {
-        return { type: "t_lostzy", value: token }; // Función lostzy
+        return { type: "t_lostzy", value: token, lineNumber }; // Función lostzy
     } else if (expresionesRegulares.taplizy.test(token)) {
         return { type: "t_taplizy", value: token }; // Función taplizy
     } else if (expresionesRegulares.doctzy.test(token)) {
-        return { type: "t_doctzy", value: token }; // Función doctzy
+        return { type: "t_doctzy", value: token, lineNumber }; // Función doctzy
     } else if (expresionesRegulares.ompatzy.test(token)) {
-        return { type: "t_ompatzy", value: token }; // Función ompatzy
+        return { type: "t_ompatzy", value: token, lineNumber }; // Función ompatzy
     } else if (expresionesRegulares.endzy.test(token)) {
-        return { type: "t_endzy", value: token }; // Función endzy
+        return { type: "t_endzy", value: token, lineNumber }; // Función endzy
     } else if (expresionesRegulares.ompurtzy.test(token)) {
-        return { type: "t_ompurtzy", value: token }; // Función ompurtzy
+        return { type: "t_ompurtzy", value: token, lineNumber }; // Función ompurtzy
     } else if (expresionesRegulares.briekzy.test(token)) {
-        return { type: "t_briekzy", value: token }; // Función briekzy
+        return { type: "t_briekzy", value: token, lineNumber }; // Función briekzy
     } else if (expresionesRegulares.rengizy.test(token)) {
-        return { type: "t_rengizy", value: token }; // Función rengizy
+        return { type: "t_rengizy", value: token, lineNumber }; // Función rengizy
     } else if (expresionesRegulares.difzy.test(token)) {
-        return { type: "t_difzy", value: token }; // Función difzy
+        return { type: "t_difzy", value: token, lineNumber }; // Función difzy
     } else if (expresionesRegulares.dilzy.test(token)) {
-        return { type: "t_dilzy", value: token }; // Función dilzy
+        return { type: "t_dilzy", value: token, lineNumber }; // Función dilzy
     } else if (expresionesRegulares.ixciptzy.test(token)) {
-        return { type: "t_ixciptzy", value: token }; // Función ixciptzy
+        return { type: "t_ixciptzy", value: token, lineNumber }; // Función ixciptzy
     } else if (expresionesRegulares.troyzy.test(token)) {
-        return { type: "t_troyzy", value: token }; // Función troyzy
+        return { type: "t_troyzy", value: token, lineNumber }; // Función troyzy
     } else if (expresionesRegulares.eszy.test(token)) {
-        return { type: "t_eszy", value: token }; // Función eszy
+        return { type: "t_eszy", value: token, lineNumber }; // Función eszy
     } else if (expresionesRegulares.fonellyzy.test(token)) {
-        return { type: "t_fonellyzy", value: token }; // Función fonellyzy
+        return { type: "t_fonellyzy", value: token, lineNumber }; // Función fonellyzy
     } else if (expresionesRegulares.frumzy.test(token)) {
-        return { type: "t_frumzy", value: token }; // Función frumzy
+        return { type: "t_frumzy", value: token, lineNumber }; // Función frumzy
     } else if (expresionesRegulares.mas_igual.test(token)) {
-        return { type: "t_mas_igual", value: token }; // Operador de suma y asignación
+        return { type: "t_mas_igual", value: token, lineNumber }; // Operador de suma y asignación
     } else if (expresionesRegulares.menos_igual.test(token)) {
-        return { type: "t_menos_igual", value: token }; // Operador de resta y asignación
+        return { type: "t_menos_igual", value: token, lineNumber }; // Operador de resta y asignación
     } else if (expresionesRegulares.identificadores.test(token)) {
-      return { type: "t_identificador", value: token }; // Identificador
+      return { type: "t_identificador", value: token, lineNumber }; // Identificador
     } else {
-      return { type: "t_desconocido", value: token }; // Token desconocido
+      return { type: "t_desconocido", value: token, lineNumber }; // Token desconocido
     }
+    
   });
 
   return tokenTypes;
 }
 
+
 // Ejemplo de uso
 const expresion = codigojs;
 const tokens = lexico(expresion);
 console.log(tokens);
+
+function analisisLexico(){
+  const codigo = document.getElementById('codigo');
+  const codigo2 = document.getElementById('codigo2');
+  codigo2.innerHTML = codigo.value;
+
+  // Obtener el contenido del textarea
+  const codigojs = codigo2.textContent;
+
+  // Realizar el análisis léxico
+  const tokens = lexico(codigojs);
+
+  // Crear una tabla para mostrar los tokens y sus números de línea
+  // const tokensTable = document.createElement('table');
+
+  const tokensBuenos = tokens.filter(token => token.type !== "t_desconocido");
+  const tokensBuenosTable = document.createElement('table')
+
+  tokensBuenosTable.innerHTML = `
+      <thead>
+          <tr>
+              <th>Línea</th>
+              <th>Token</th>
+              <th>Tipo</th>
+          </tr>
+      </thead>
+      <tbody id="tokens-body">
+      </tbody>
+  `;
+
+  // Obtener el cuerpo de la tabla
+  const tokensBody = tokensBuenosTable.querySelector('#tokens-body');
+
+  // Llenar la tabla con los tokens y sus números de línea
+  tokensBuenos.forEach(token => {
+      const row = tokensBody.insertRow();
+      const cell1 = row.insertCell();
+      const cell2 = row.insertCell();
+      const cell3 = row.insertCell();
+      cell1.textContent = token.lineNumber; // Utiliza token.lineNumber en lugar de token.linea
+      cell2.textContent = token.value.toString(); // Convertir a cadena de texto
+      cell3.textContent = token.type;
+  });
+
+  // Mostrar la tabla en el div "tokens-container"
+  const tokensContainer = document.getElementById('tokens-container');
+  tokensContainer.innerHTML = ''; // Limpiar el contenido previo
+  tokensContainer.appendChild(tokensBuenosTable);
+
+
+
+// Tabla de errores
+const tokensError = tokens.filter(token => token.type === "t_desconocido");  
+const tokensErrorTable = document.createElement('table')
+
+tokensErrorTable.innerHTML = `
+<thead>
+    <tr>
+        <th>Línea</th>
+        <th>Token</th>
+        <th>Tipo</th>
+    </tr>
+</thead>
+<tbody id="tokens-body-error">
+</tbody>
+`;
+
+const tokensBodyError = tokensErrorTable.querySelector('#tokens-body-error');
+
+tokensError.forEach(token => {
+  const row = tokensBodyError.insertRow();
+  const cell1 = row.insertCell();
+  const cell2 = row.insertCell();
+  const cell3 = row.insertCell();
+  cell1.textContent = token.lineNumber; // Utiliza token.lineNumber en lugar de token.linea
+  cell2.textContent = token.value.toString(); // Convertir a cadena de texto
+  cell3.textContent = token.type;
+});
+
+  const tokensContainerError = document.getElementById('tokens-container-error');
+  tokensContainerError.innerHTML = ''; // Limpiar el contenido previo
+  tokensContainerError.appendChild(tokensErrorTable);
+
+
+
+}
