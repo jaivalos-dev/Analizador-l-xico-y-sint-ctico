@@ -111,12 +111,21 @@ const expresionesRegulares = {
 
   //Identificadores
   identificadores: /^[a-zA-Z_]\w*$/,
+
+  //comentario
+  comentario: /^(")([a-zA-Z_0-9])(")$/,
 };
 
 function lexico(input) {
+
   // Dividir la entrada en líneas
   const lines = input.split('\n');
 
+  const tokens = input
+    .replace(/\s+/g, "") // Eliminar espacios en blanco
+    .match(
+        /(\d+|(")([a-zA-Z_0-9])(")|\*\*|\-\-|\/\-|\+\=|\+|\-\=|\-|(\*args)|(\*\*kwargs)|\*|\/|\(|\)|\^|\"|\!|\¡|\@|\#|\%|\&|\=|\[|\]|\{|\}|\\|\||\:|\;|\'|\<\=|\>\=|\<|\>|\.|\,|\?|\¿|(clesszy)|(difzy)|(__onotzy__)|(silfzy)|(wholizy)|(prontzy)|(furzy)|(in)|(du)|(ontzy)|(rtszy)|(fluetzy)|(cumplixzy)|(lostzy)|(taplizy)|(sitzy)|(doctzy)|(__niwzy__)|(super)|(clszy)|(ritarnzy)|(traplizy)|(__cellzy__)|(ompatzy)|(pesszy)|(endzy)|(ompurtzy)|(briekzy)|(rengizy)|(dilzy)|(ixciptzy)|(troyzy)|(eszy)|(fonellyzy)|(frumzy)|(felsizy)|(strongzy)|(rew-strongzy)|(fstrongzy)|(nunizy)|(traizy)|(ofzy)|(ilofzy)|(ilsizy)|(cuntonaizy)|[a-zA-Z_]\w*|\_|\S)/g
+      ); // Identificar números, operadores, identificadores y otros caracteres
   // Dividir cada línea en tokens y registrar el número de línea para cada token
   const tokensWithLine = lines.flatMap((line, lineNumber) => {
     return line.match(/(\d+|\*\*|\-\-|\/\-|\+\=|\+|\-\=|\-|(\*args)|(\*\*kwargs)|\*|\/|\(|\)|\^|\"|\!|\¡|\@|\#|\%|\&|\=|\[|\]|\{|\}|\\|\||\:|\;|\'|\<\=|\>\=|\<|\>|\.|\,|\?|\¿|(clesszy)|(difzy)|(__onotzy__)|(silfzy)|(wholizy)|(prontzy)|(furzy)|(in)|(du)|(ontzy)|(rtszy)|(fluetzy)|(cumplixzy)|(lostzy)|(taplizy)|(sitzy)|(doctzy)|(__niwzy__)|(super)|(clszy)|(ritarnzy)|(traplizy)|(__cellzy__)|(ompatzy)|(pesszy)|(endzy)|(ompurtzy)|(briekzy)|(rengizy)|(dilzy)|(ixciptzy)|(troyzy)|(eszy)|(fonellyzy)|(frumzy)|(felsizy)|(strongzy)|(rew-strongzy)|(fstrongzy)|(nunizy)|(traizy)|(ofzy)|(ilofzy)|(ilsizy)|(cuntonaizy)|[a-zA-Z_]\w*|\_|\S)/g).map(token => ({ token, lineNumber: lineNumber + 1 }));
@@ -125,7 +134,9 @@ function lexico(input) {
   // Identificar el tipo de cada token y retornarlos
   const tokenTypes = tokensWithLine.map(({ token, lineNumber }) => {
     if (expresionesRegulares.numeros.test(token)) {
-      return { type: "t_num", value: parseInt(token, 10), lineNumber }; // Número
+      return { type: "t_num", value: parseInt(token, 10),  }; // Número
+    } else if (expresionesRegulares.comentario.test(token)) {
+      return { type: "t_comentario", value: token, lineNumber }; // Comentario
     } else if (expresionesRegulares.asignacion.test(token)) {
       return { type: "t_asignacion", value: token, lineNumber }; // Operador de asignación
     } else if (expresionesRegulares.suma.test(token)) {
