@@ -134,7 +134,7 @@ function lexico(input) {
   // Identificar el tipo de cada token y retornarlos
   const tokenTypes = tokensWithLine.map(({ token, lineNumber }) => {
     if (expresionesRegulares.numeros.test(token)) {
-      return { type: "t_num", value: parseInt(token, 10),  }; // Número
+      return { type: "t_num", value: parseInt(token, 10), lineNumber  }; // Número
     } else if (expresionesRegulares.comentario.test(token)) {
       return { type: "t_comentario", value: token, lineNumber }; // Comentario
     } else if (expresionesRegulares.asignacion.test(token)) {
@@ -330,8 +330,12 @@ function analisisLexico(){
   const tokens = lexico(codigojs);
 
   // Crear una tabla para mostrar los tokens y sus números de línea
-  const tokensTable = document.createElement('table');
-  tokensTable.innerHTML = `
+  // const tokensTable = document.createElement('table');
+
+  const tokensBuenos = tokens.filter(token => token.type !== "t_desconocido");
+  const tokensBuenosTable = document.createElement('table')
+
+  tokensBuenosTable.innerHTML = `
       <thead>
           <tr>
               <th>Línea</th>
@@ -344,10 +348,10 @@ function analisisLexico(){
   `;
 
   // Obtener el cuerpo de la tabla
-  const tokensBody = tokensTable.querySelector('#tokens-body');
+  const tokensBody = tokensBuenosTable.querySelector('#tokens-body');
 
   // Llenar la tabla con los tokens y sus números de línea
-  tokens.forEach(token => {
+  tokensBuenos.forEach(token => {
       const row = tokensBody.insertRow();
       const cell1 = row.insertCell();
       const cell2 = row.insertCell();
@@ -360,5 +364,42 @@ function analisisLexico(){
   // Mostrar la tabla en el div "tokens-container"
   const tokensContainer = document.getElementById('tokens-container');
   tokensContainer.innerHTML = ''; // Limpiar el contenido previo
-  tokensContainer.appendChild(tokensTable);
+  tokensContainer.appendChild(tokensBuenosTable);
+
+
+
+// Tabla de errores
+const tokensError = tokens.filter(token => token.type === "t_desconocido");  
+const tokensErrorTable = document.createElement('table')
+
+tokensErrorTable.innerHTML = `
+<thead>
+    <tr>
+        <th>Línea</th>
+        <th>Token</th>
+        <th>Tipo</th>
+    </tr>
+</thead>
+<tbody id="tokens-body-error">
+</tbody>
+`;
+
+const tokensBodyError = tokensErrorTable.querySelector('#tokens-body-error');
+
+tokensError.forEach(token => {
+  const row = tokensBodyError.insertRow();
+  const cell1 = row.insertCell();
+  const cell2 = row.insertCell();
+  const cell3 = row.insertCell();
+  cell1.textContent = token.lineNumber; // Utiliza token.lineNumber en lugar de token.linea
+  cell2.textContent = token.value.toString(); // Convertir a cadena de texto
+  cell3.textContent = token.type;
+});
+
+  const tokensContainerError = document.getElementById('tokens-container-error');
+  tokensContainerError.innerHTML = ''; // Limpiar el contenido previo
+  tokensContainerError.appendChild(tokensErrorTable);
+
+
+
 }

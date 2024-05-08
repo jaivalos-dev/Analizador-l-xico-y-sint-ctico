@@ -81,8 +81,15 @@
   }
   console.log('hola');
 </script>
-<h1>hola aqui esta los tokens y errores</h1>
+
+<h1>Tabla de tokens</h1>
+
 <div id="tokens-container"></div>
+
+<h1>Tabla de errores</h1>
+
+<div id="tokens-container-error"></div>
+
 <style>
   /* Estilos para la tabla */
 table {
@@ -107,6 +114,12 @@ th {
   background-color: #4CAF50;
   color: white;
 }
+
+#tokens-container-error th{
+  background-color: #d32727;
+  color: white;
+}
+
 </style>
 
 {% endblock %}
