@@ -304,7 +304,7 @@ function lexico(input) {
     } else if (expresionesRegulares.identificadores.test(token)) {
       return { type: "t_identificador", value: token, lineNumber }; // Identificador
     } else {
-      return { type: "t_desconocido", value: token, lineNumber }; // Token desconocido
+      return { type: "t_desconocido", value: token, lineNumber, coment:"Caracter no reconocido en el alfabeto del lenguaje." }; // Token desconocido
     }
     
   });
@@ -314,9 +314,9 @@ function lexico(input) {
 
 
 // Ejemplo de uso
-const expresion = codigojs;
-const tokens = lexico(expresion);
-console.log(tokens);
+//const expresion = codigojs;
+//const tokens = lexico(expresion);
+//console.log(tokens);
 
 function analisisLexico(){
   const codigo = document.getElementById('codigo');
@@ -378,6 +378,7 @@ tokensErrorTable.innerHTML = `
         <th>Línea</th>
         <th>Token</th>
         <th>Tipo</th>
+        <th>Descripción</th>
     </tr>
 </thead>
 <tbody id="tokens-body-error">
@@ -391,9 +392,11 @@ tokensError.forEach(token => {
   const cell1 = row.insertCell();
   const cell2 = row.insertCell();
   const cell3 = row.insertCell();
+  const cell4 = row.insertCell();
   cell1.textContent = token.lineNumber; // Utiliza token.lineNumber en lugar de token.linea
   cell2.textContent = token.value.toString(); // Convertir a cadena de texto
   cell3.textContent = token.type;
+  cell4.textContent = token.coment;
 });
 
   const tokensContainerError = document.getElementById('tokens-container-error');
@@ -401,5 +404,8 @@ tokensError.forEach(token => {
   tokensContainerError.appendChild(tokensErrorTable);
 
 
-
+  //Creamos la cadena
+  const tokensCadena = tokens.map(token => token.type).join(' ');
+  const tokensCadenaDiv = document.getElementById('tokens-cadena');
+  tokensCadenaDiv.textContent = tokensCadena;
 }

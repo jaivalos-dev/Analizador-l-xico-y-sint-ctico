@@ -58,6 +58,7 @@
 {% endif %}
 
 <script src="../../staticfiles/consola.js"></script>
+
 <script>
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -78,15 +79,28 @@
     let script = document.createElement('script');
     script.src = '../../staticfiles/lexico.js';
     document.head.appendChild(script)
+
+    const titulo1 = document.getElementById("titulo1")
+    const titulo2 = document.getElementById("titulo2")
+    const titulo3 = document.getElementById("titulo3")
+
+    titulo1.classList.add("aparecer");
+    titulo2.classList.add("aparecer");
+    titulo3.classList.add("aparecer");
+
   }
   console.log('hola');
 </script>
 
-<h1>Tabla de tokens</h1>
+<h1 id = "titulo1" class="ocultar">Cadena de tokens</h1>
+
+<div id="tokens-cadena"></div>
+
+<h1 id = "titulo2"  class="ocultar">Tabla de tokens</h1>
 
 <div id="tokens-container"></div>
 
-<h1>Tabla de errores</h1>
+<h1 id = "titulo3"  class="ocultar">Tabla de errores</h1>
 
 <div id="tokens-container-error"></div>
 
@@ -95,6 +109,10 @@
 table {
   border-collapse: collapse;
   width: 100%;
+}
+
+.ocultar{
+  color: white;
 }
 
 /* Estilos para las celdas de la tabla */
@@ -119,7 +137,9 @@ th {
   background-color: #d32727;
   color: white;
 }
-
+.aparecer{
+  color: #000000;
+}
 </style>
 
 {% endblock %}
