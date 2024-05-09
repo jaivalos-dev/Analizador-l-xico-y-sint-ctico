@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
 
 <style>
   .hidden {
@@ -10,6 +10,10 @@
 </style>
 <link rel="stylesheet" href="../../staticfiles/consola.css" />
 <link rel="stylesheet" href="../../staticfiles/codigo.css" />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.css"
+/>
 
 <h1 class="display-1 text-center mb-5 mt-2">Sube tu archivo</h1>
 
@@ -31,24 +35,23 @@
   <div class="container h-100">
     <div class="row h-100 mb-5">
       <div class="col-16 mb-1">
-      <div class="container">
-        <div class="row">
-          <div class="editor">
-            <div class="line-numbers">
-              <span></span>
-            </div>
-            <textarea id="codigo" name="codigo" spellcheck="false" cols="500">{{ file_text }}</textarea>
+        <div class="container">
+          <div class="row">
+            <textarea id="codigo" name="codigo" spellcheck="false" cols="500">
+{{ file_text }}</textarea
+            >
           </div>
         </div>
-      </div>
       </div>
     </div>
   </div>
 </form>
 
-<p id="codigo2" style="display: none;"></p>
+<p id="codigo2"></p>
 
-<button class="btn btn-primary" type="button" onclick="analisisLexico()">Analisis léxico</button>
+<button class="btn btn-primary" type="button" onclick="analisisLexico()">
+  Analisis léxico
+</button>
 <button class="btn btn-secondary" type="button">Analisis Sintáctico</button>
 
 {% if message %}
@@ -59,87 +62,173 @@
 
 <script src="../../staticfiles/consola.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/mode/javascript/javascript.min.js"></script>
+
 <script>
 
-  document.addEventListener('DOMContentLoaded', function() {
-    const codigo = document.getElementById('codigo');
-    const codigo2 = document.getElementById('codigo2');
+var editor;
 
-    codigo.addEventListener('input', function() {
-      codigo2.innerHTML = codigo.value;
+  document.addEventListener("DOMContentLoaded", function () {
+    CodeMirror.defineMode("zypher", function () {
+      var palabrasReservadas = [
+        "ontzy",
+        "fluetzy",
+        "complixzy",
+        "traizy",
+        "felsizy",
+        "strongzy",
+        "rew-strongzy",
+        "fstrongzy",
+        "lostzy",
+        "traplizy",
+        "sitzy",
+        "nunizy",
+        "ofzy",
+        "ilsizy",
+        "ilofzy",
+        "furzy",
+        "in",
+        "wholizy",
+        "du",
+        "pesszy",
+        "cuntonaizy",
+        "clesszy",
+        "silfzy",
+        "__onotzy__",
+        "niwzy",
+        "super",
+        "clszy",
+        "args",
+        "kwargs",
+        "ritarnzy",
+        "__cellzy__",
+        "prontzy",
+        "rtszy",
+        "fluetzy",
+        "lostzy",
+        "taplizy",
+        "doctzy",
+        "ompatzy",
+        "endzy",
+        "ompurtzy",
+        "briekzy",
+        "rengizy",
+        "difzy",
+        "dilzy",
+        "ixciptzy",
+        "troyzy",
+        "eszy",
+        "fonellyzy",
+        "frumzy",
+      ];
+      var palabrasReservadasRegex = new RegExp(
+        "\\b(" + palabrasReservadas.join("|") + ")\\b"
+      );
+
+      return {
+        token: function (stream, state) {
+          if (stream.eatSpace()) return null;
+
+          if (stream.match(palabrasReservadasRegex)) {
+            return "keyword"; // Cambiado de "reservada" a "keyword"
+          }
+
+          stream.next();
+          return null;
+        },
+      };
+    });
+
+    editor = CodeMirror.fromTextArea(document.getElementById("codigo"), {
+      lineNumbers: true, // Muestra números de línea
+      mode: "zypher", // Establece el modo del editor (puede ser 'javascript', 'htmlmixed', etc.)
+    });
+
+    const codigo2 = document.getElementById("codigo2");
+
+    // Usamos el evento 'change' de CodeMirror para actualizar 'codigo2'
+    editor.on("change", function () {
+      codigo2.innerHTML = editor.getValue();
     });
   });
 
-  function analisisLexico(){
+  function analisisLexico() {
+    const codigo = editor.getValue(); // Obtener el texto del editor
+    const codigo2 = document.getElementById("codigo2");
 
-    const codigo = document.getElementById('codigo');
-    const codigo2 = document.getElementById('codigo2');
-    codigo2.innerHTML = codigo.value;
+    // Asignar el texto del editor al elemento codigo2
+    codigo2.innerHTML = codigo;
 
-    let script = document.createElement('script');
-    script.src = '../../staticfiles/lexico.js';
-    document.head.appendChild(script)
+    // Continuar con el resto de tu código
+    let script = document.createElement("script");
+    script.src = "../../staticfiles/lexico.js";
+    document.head.appendChild(script);
 
-    const titulo1 = document.getElementById("titulo1")
-    const titulo2 = document.getElementById("titulo2")
-    const titulo3 = document.getElementById("titulo3")
+    const titulo1 = document.getElementById("titulo1");
+    const titulo2 = document.getElementById("titulo2");
+    const titulo3 = document.getElementById("titulo3");
 
     titulo1.classList.add("aparecer");
     titulo2.classList.add("aparecer");
     titulo3.classList.add("aparecer");
-
-  }
-  console.log('hola');
+}
 </script>
 
-<h1 id = "titulo1" class="ocultar">Cadena de tokens</h1>
+<h1 id="titulo1" class="ocultar">Cadena de tokens</h1>
 
 <div id="tokens-cadena"></div>
 
-<h1 id = "titulo2"  class="ocultar">Tabla de tokens</h1>
+<h1 id="titulo2" class="ocultar">Tabla de tokens</h1>
 
 <div id="tokens-container"></div>
 
-<h1 id = "titulo3"  class="ocultar">Tabla de errores</h1>
+<h1 id="titulo3" class="ocultar">Tabla de errores</h1>
 
 <div id="tokens-container-error"></div>
 
 <style>
+  .CodeMirror .keyword {
+    color: blue; /* Color que quieres aplicar a las palabras reservadas */
+    font-weight: bold; /* Otras propiedades de estilo que desees aplicar */
+  }
+
   /* Estilos para la tabla */
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
 
-.ocultar{
-  color: white;
-}
+  .ocultar {
+    color: white;
+  }
 
-/* Estilos para las celdas de la tabla */
-th, td {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
+  /* Estilos para las celdas de la tabla */
+  th,
+  td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
 
-/* Estilos para las filas impares */
-tr:nth-child(odd) {
-  background-color: #f2f2f2;
-}
+  /* Estilos para las filas impares */
+  tr:nth-child(odd) {
+    background-color: #f2f2f2;
+  }
 
-/* Estilos para el encabezado de la tabla */
-th {
-  background-color: #4CAF50;
-  color: white;
-}
+  /* Estilos para el encabezado de la tabla */
+  th {
+    background-color: #4caf50;
+    color: white;
+  }
 
-#tokens-container-error th{
-  background-color: #d32727;
-  color: white;
-}
-.aparecer{
-  color: #000000;
-}
+  #tokens-container-error th {
+    background-color: #d32727;
+    color: white;
+  }
+  .aparecer {
+    color: #000000;
+  }
 </style>
 
 {% endblock %}

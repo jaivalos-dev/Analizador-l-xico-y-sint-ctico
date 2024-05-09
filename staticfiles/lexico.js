@@ -319,12 +319,13 @@ function lexico(input) {
 //console.log(tokens);
 
 function analisisLexico(){
-  const codigo = document.getElementById('codigo');
   const codigo2 = document.getElementById('codigo2');
-  codigo2.innerHTML = codigo.value;
+
 
   // Obtener el contenido del textarea
   const codigojs = codigo2.textContent;
+
+  console.log(codigojs);
 
   // Realizar el análisis léxico
   const tokens = lexico(codigojs);
