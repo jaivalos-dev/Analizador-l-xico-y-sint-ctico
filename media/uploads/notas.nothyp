@@ -1,11 +1,22 @@
- clesszy  MiClase: 
-  difzy  __ niwzy __! clszy, x, y! 
- ritarnzy  x + y
-
-objeto = MiClase¡! 
-
-prueba = "Hola mundo" 
-
-
-resultado = objeto¡3, 5! 
-prontzy¡resultado!
+n1 numero_
+n2 numero_
+total numero_
+encender <ejemplo_utp> [
+    pantalla |^Bienvenido^|_
+    pantalla |^Ingrese un numero mayor a 0^|_
+    enchufe -> n1_
+    pantalla |^Ingrese otro numero mayor a 0^|_
+    enchufe -> n2_
+    utp n1 ->!= 1 [
+        utp n2 ->!= 1 [
+            total != n1 ? n2_
+        ] ftp [
+            pantalla |^numero ^|; n2 ;|^ no valido^|_
+            reiniciar <ejemplo_utp>_
+        ]	
+    ] ftp [
+        pantalla |^numero ^|; n1 ;|^ no valido^|_
+        reiniciar <ejemplo_utp>_
+    ]
+]
+apagar <ejemplo_utp>

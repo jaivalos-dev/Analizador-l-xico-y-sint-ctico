@@ -16,10 +16,10 @@ def upload_file(request):
         form = FileUploadForm(request.POST, request.FILES)
         if form.is_valid():
             file = request.FILES['file']
-            if not file.name.endswith('.nothyp'):
+            if not file.name.endswith('.zy'):
                 return render(request, 'upload_file.html', {
                     'form': FileUploadForm(),
-                    'error': 'File extension must be .nothyp'
+                    'error': 'File extension must be .zy'
                 })
             else:
                 file_path = os.path.join('media', 'uploads', file.name)
@@ -29,7 +29,7 @@ def upload_file(request):
                     for chunk in file.chunks():
                         destination.write(chunk)
                 request.session['file_name'] = file.name  # Guardar el nombre del archivo en la sesión
-                with open(file_path, 'r') as f:
+                with open(file_path, 'r', encoding='utf-8') as f:
                     file_text = f.read()  # Obtener el contenido del archivo
                 return render(request, 'upload_file.html', {
                     'form': FileUploadForm(),
@@ -72,7 +72,7 @@ def modify_file(request):
 
         try:
             # Intentar abrir el archivo para escritura
-            with open(file_path, 'w') as file:
+            with open(file_path, 'w', encoding='utf-8') as file:
                 file.write(file_text)
             return redirect('upload_file')
         except FileNotFoundError:
