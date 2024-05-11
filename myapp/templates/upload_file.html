@@ -40,7 +40,7 @@
   </div>
 </form>
 
-<p id="codigo2"></p>
+<code id="codigo2"></code><br>
 
 <button class="btn btn-primary" id="analisislex" type="button" onclick="analisisLexico()">Analisis léxico</button>
 <button class="btn btn-secondary" id="analisissin" type="button">Analisis Sintáctico</button>
@@ -128,7 +128,7 @@ var editor;
           if (stream.match(/^-?[0-9]+(\.[0-9]+)?/)){
             return "number";
           }
-          if (stream.match(/^-?[a-zA-Z]+(\.[a-zA-Z]+)?/)){ ////^-?[a-zA-Z]+(\.[a-zA-Z]+)?/
+          if (stream.match(/^-?[a-zA-ZáéíóúñÁÉÍÓÚ]+(\.[a-zA-ZáéíóúñÁÉÍÓÚ]+)?/)){ ////^-?[a-zA-Z]+(\.[a-zA-Z]+)?/
 
             return "string"; // Devuelve "string" para resaltar las funciones
           }

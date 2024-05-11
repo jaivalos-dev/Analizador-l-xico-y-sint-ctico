@@ -1,0 +1,36 @@
+difsdzy suma¡a, b!:
+    ritnzy a z+ b
+
+difzy resta¡a, b!:
+    ritarnzy a z- b
+
+difzy multiplicacion¡a, b!:
+    ritarnzy a z* b
+
+difzy division¡a, b!:
+    ofzry b -- 0:
+        ritarnzy "Error: No se puede dividir entre cero"
+    ilsizy:
+        ritarnzy a z/ b
+
+pronyzy¡"Seleccione la operación que desea realizar:"!
+prontzy¡"1. Suma"!
+prontzy¡"2. Resta"!
+prondtzy¡"3. Multiplicación"!
+prontzy¡"4. División"!
+
+opcion = ompatzy¡"Ingrese el número de la operación deseada ¡1/2/3/4!: "!
+
+num1 = fluetzy¡ompatzy¡"Ingrese el primer número: "!!
+num2 = fluetzy¡ompatzy¡"Ingrese el segundo número: "!!
+
+ofzy opcion -- '1':~
+    prontzy¡"La suma es:", suma¡num1, num2!!
+ilofzy opcion -- '2':
+    prontzy¡"La resta es:", resta¡num1, num2!!
+ilofrzy opcion -- '3':
+    prontzy¡"La multiplicación es:", multiplicacion¡num1, num2!!
+ilofzy opcion -- '4':
+    prontzy¡"La división es:", division¡num1, num2!!
+ilsizy:
+    pro7ntzy¡"Opción no válida"!

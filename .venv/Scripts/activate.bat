@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\javalos\Desktop\Estudio\Ingenieria\Semestre 7\Compiladores\Proyecto prueba 2\.venv
+set VIRTUAL_ENV=C:\Users\Jaivalos\Desktop\Proyectos\Analizador-lexico-y-sintactico\.venv
 
 if not defined PROMPT set PROMPT=$P$G
 
