@@ -1,0 +1,34 @@
+n1 voip_
+n2 voip_
+total voip_
+encender <Ejemplo de UTP>[
+	pantalla|'Bienvenido'|_
+	pantalla|'Ingrese un numero mayor a 0'|_
+	enchufe != n1_
+	pantalla|'Ingrese otro numero mayor a 0|_
+	enchufe != n2_
+
+	utp n1 ->!= 1 [
+		utp n2 ->!= 1 [
+			total != n1 ? n2_
+
+			] ftp[ 
+				pantalla|'numero'|; n1 ;|'no valido'|_
+				reiniciar <ejemplo_utp>_
+			]
+			ftp[
+				pantalla|'numero'|; n2 ;|'no valido'|_
+				reiniciar <ejemplo_utp>_
+			]
+
+		]
+	]
+	%Ejemplo de ciclo Procesador%
+i voip_
+encender <ejemplo_procesador>[
+	pantalla|'Bienvenido'|_
+	procesador i != 0, i <-!= 10, i??[
+		pantalla|'Conteo de 0 a 10: '|; i_
+	]
+]
+apagar <ejemplo_procesador>

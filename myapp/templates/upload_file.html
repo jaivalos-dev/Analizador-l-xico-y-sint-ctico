@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 
-<meta charset="UTF-8" />
+<meta charset="UTF-8"/>
 
 <style>
   .hidden {
@@ -9,12 +9,7 @@
   }
 </style>
 <link rel="stylesheet" href="../../staticfiles/consola.css" />
-<link rel="stylesheet" href="../../staticfiles/codigo.css" />
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.css"
-/>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.css"/>
 <h1 class="display-1 text-center mb-5 mt-2">Sube tu archivo</h1>
 
 <form method="post" enctype="multipart/form-data">
@@ -31,15 +26,13 @@
   enctype="multipart/form-data"
 >
   {% csrf_token %}
-  <input type="hidden" name="file_name" value="{{ file_name }}" />
+  <input type="hidden" id = name name="file_name" value="{{ file_name }}" />
   <div class="container h-100">
     <div class="row h-100 mb-5">
       <div class="col-16 mb-1">
         <div class="container">
           <div class="row">
-            <textarea id="codigo" name="codigo" spellcheck="false" cols="500">
-{{ file_text }}</textarea
-            >
+            <textarea id="codigo" name="codigo" spellcheck="false" cols="500">{{ file_text }}</textarea>
           </div>
         </div>
       </div>
@@ -49,10 +42,8 @@
 
 <p id="codigo2"></p>
 
-<button class="btn btn-primary" type="button" onclick="analisisLexico()">
-  Analisis léxico
-</button>
-<button class="btn btn-secondary" type="button">Analisis Sintáctico</button>
+<button class="btn btn-primary" id="analisislex" type="button" onclick="analisisLexico()">Analisis léxico</button>
+<button class="btn btn-secondary" id="analisissin" type="button">Analisis Sintáctico</button>
 
 {% if message %}
 <p id="message" class="alert alert-success mt-2">{{ message }}</p>
@@ -121,6 +112,7 @@ var editor;
         "eszy",
         "fonellyzy",
         "frumzy",
+        "/^-?[0-9]+(\.[0-9]+)?/",
       ];
       var palabrasReservadasRegex = new RegExp(
         "\\b(" + palabrasReservadas.join("|") + ")\\b", "i"
@@ -133,7 +125,16 @@ var editor;
           if (stream.match(palabrasReservadasRegex)) {
             return "keyword"; // Cambiado de "reservada" a "keyword"
           }
+          if (stream.match(/^-?[0-9]+(\.[0-9]+)?/)){
+            return "number";
+          }
+          if (stream.match(/^-?[a-zA-Z]+(\.[a-zA-Z]+)?/)){ ////^-?[a-zA-Z]+(\.[a-zA-Z]+)?/
 
+            return "string"; // Devuelve "string" para resaltar las funciones
+          }
+          if (stream.match(/^\$\$[a-zA-Z0-9áéíóúÁÉÍÓÚüÜ,.:;!?¡¿/\s]*$/)){
+            return "comment"; // Devuelve "function" para resaltar las funciones
+          }
           stream.next();
           return null;
         },
@@ -176,23 +177,13 @@ var editor;
 </script>
 
 <h1 id="titulo1" class="ocultar">Cadena de tokens</h1>
-
 <div id="tokens-cadena"></div>
-
 <h1 id="titulo2" class="ocultar">Tabla de tokens</h1>
-
 <div id="tokens-container"></div>
-
 <h1 id="titulo3" class="ocultar">Tabla de errores</h1>
-
 <div id="tokens-container-error"></div>
 
 <style>
-  .CodeMirror .keyword {
-    color: blue; /* Color que quieres aplicar a las palabras reservadas */
-    font-weight: bold; /* Otras propiedades de estilo que desees aplicar */
-  }
-
   /* Estilos para la tabla */
   table {
     border-collapse: collapse;
@@ -214,6 +205,7 @@ var editor;
   /* Estilos para las filas impares */
   tr:nth-child(odd) {
     background-color: #f2f2f2;
+
   }
 
   /* Estilos para el encabezado de la tabla */
@@ -229,6 +221,30 @@ var editor;
   .aparecer {
     color: #000000;
   }
-</style>
+  
+  /* Estilos globales para el modo oscuro */
+body {
+  background-color: #ffffff; /* Color de fondo oscuro para toda la página */
+  color: #000000; /* Color del texto en modo oscuro */
+}
 
+/* Estilos para el editor de CodeMirror */
+.CodeMirror {
+  background-color: #ffffff; /* Color de fondo oscuro para el editor */
+  color: #000000; /* Color del texto en el editor */
+}
+
+.CodeMirror .cm-string{
+color: rgb(0, 102, 128)
+}
+.CodeMirror .cm-keyword{
+color: rgb(178, 27, 178)
+}
+.CodeMirror .cm-number{
+color: rgb(236, 9, 9) 
+}
+.CodeMirror .cm-comment{
+  color: rgb(165, 165, 162) 
+  }
+</style>
 {% endblock %}

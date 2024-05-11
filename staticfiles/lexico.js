@@ -119,6 +119,8 @@ const expresionesRegulares = {
   comentario: /^\$\$[a-zA-Z0-9áéíóúÁÉÍÓÚüÜ,.:;!?¡¿/\s]*$/,
 
   saltoLinea: /^()$/,
+
+  palabrasReservadasmal: /[a-zA-Z0-9]\bzy$/i,
 };
 
 function lexico(input) {
@@ -131,8 +133,8 @@ function lexico(input) {
   const tokens = input
     .replace(/\s+/g, "") // Eliminar espacios en blanco
     .match(
-        /(\d+|\$\$[a-zA-Z0-9áéíóúÁÉÍÓÚüÜ,.:;!?¡¿/\s]*|\"[a-zA-Z0-9áéíóúÁÉÍÓÚüÜ,.:;!?¡¿/\s]*\"|\*\*|\-\-|\/\-|\+\=|\+|\-\=|\-|(\*args)|(\*\*kwargs)|\*|\/|\(|\)|\^|\"|\!|\¡|\@|\#|\%|\&|\=|\[|\]|\{|\}|\\|\||\:|\;|\'|\<\=|\>\=|\<|\>|\.|\,|\?|\¿|(clesszy)|(difzy)|(__onotzy__)|(silfzy)|(wholizy)|(prontzy)|(furzy)|(in)|(du)|(ontzy)|(rtszy)|(fluetzy)|(cumplixzy)|(lostzy)|(taplizy)|(sitzy)|(doctzy)|(__niwzy__)|(super)|(clszy)|(ritarnzy)|(traplizy)|(__cellzy__)|(ompatzy)|(pesszy)|(endzy)|(ompurtzy)|(briekzy)|(rengizy)|(dilzy)|(ixciptzy)|(troyzy)|(eszy)|(fonellyzy)|(frumzy)|(felsizy)|(strongzy)|(rew-strongzy)|(fstrongzy)|(nunizy)|(traizy)|(ofzy)|(ilofzy)|(ilsizy)|(cuntonaizy)|[a-zA-Z_]\w*|\_|\S)/g
-      ); // Identificar números, operadores, identificadores y otros caracteres
+      /(\d+|\$\$[a-zA-Z0-9áéíóúÁÉÍÓÚüÜ,.:;!?¡¿/\s]*|\"[a-zA-Z0-9áéíóúÁÉÍÓÚüÜ,.:;!?¡¿/\s]*\"|\*\*|\-\-|\/\-|\+\=|\+|\-\=|\-|(\*args)|(\*\*kwargs)|\*|\/|\(|\)|\^|\"|\!|\¡|\@|\#|\%|\&|\=|\[|\]|\{|\}|\\|\||\:|\;|\'|\<\=|\>\=|\<|\>|\.|\,|\?|\¿|(clesszy)|(difzy)|(__onotzy__)|(silfzy)|(wholizy)|(prontzy)|(furzy)|(in)|(du)|(ontzy)|(rtszy)|(fluetzy)|(cumplixzy)|(lostzy)|(taplizy)|(sitzy)|(doctzy)|(__niwzy__)|(super)|(clszy)|(ritarnzy)|(traplizy)|(__cellzy__)|(ompatzy)|(pesszy)|(endzy)|(ompurtzy)|(briekzy)|(rengizy)|(dilzy)|(ixciptzy)|(troyzy)|(eszy)|(fonellyzy)|(frumzy)|(felsizy)|(strongzy)|(rew-strongzy)|(fstrongzy)|(nunizy)|(traizy)|(ofzy)|(ilofzy)|(ilsizy)|(cuntonaizy)|[a-zA-Z_]\w*|\_|\S)/g
+    ); // Identificar números, operadores, identificadores y otros caracteres
   // Dividir cada línea en tokens y registrar el número de línea para cada token
   const tokensWithLine = lines.flatMap((line, lineNumber) => {
     return line.match(/(\d+|\$\$[a-zA-Z0-9áéíóúÁÉÍÓÚüÜ,.:;!?¡¿/\s]*|\"[a-zA-Z0-9áéíóúÁÉÍÓÚüÜ,.:;!?¡¿/\s]*\"|\*\*|\-\-|\/\-|\+\=|\+|\-\=|\-|(\*args)|(\*\*kwargs)|\*|\/|\(|\)|\^|\"|\!|\¡|\@|\#|\%|\&|\=|\[|\]|\{|\}|\\|\||\:|\;|\'|\<\=|\>\=|\<|\>|\.|\,|\?|\¿|\¬|(clesszy)|(difzy)|(__onotzy__)|(silfzy)|(wholizy)|(prontzy)|(furzy)|(in)|(du)|(ontzy)|(rtszy)|(fluetzy)|(cumplixzy)|(lostzy)|(taplizy)|(sitzy)|(doctzy)|(__niwzy__)|(super)|(clszy)|(ritarnzy)|(traplizy)|(__cellzy__)|(ompatzy)|(pesszy)|(endzy)|(ompurtzy)|(briekzy)|(rengizy)|(dilzy)|(ixciptzy)|(troyzy)|(eszy)|(fonellyzy)|(frumzy)|(felsizy)|(strongzy)|(rew-strongzy)|(fstrongzy)|(nunizy)|(traizy)|(ofzy)|(ilofzy)|(ilsizy)|(cuntonaizy)|[a-zA-Z_]\w*|\_||\S)/g).map(token => ({ token, lineNumber: lineNumber + 1 }));
@@ -141,7 +143,7 @@ function lexico(input) {
   // Identificar el tipo de cada token y retornarlos
   const tokenTypes = tokensWithLine.map(({ token, lineNumber }) => {
     if (expresionesRegulares.numeros.test(token)) {
-      return { type: "<t_num>", value: parseInt(token, 10), lineNumber  }; // Número
+      return { type: "<t_num>", value: parseInt(token, 10), lineNumber }; // Número
     } else if (expresionesRegulares.comentario.test(token)) {
       return { type: "<t_comentario>", value: token, lineNumber }; // Comentario
     } else if (expresionesRegulares.string.test(token)) {
@@ -271,106 +273,66 @@ function lexico(input) {
     } else if (expresionesRegulares.ampersand.test(token)) {
       return { type: "<t_ampersand>", value: token, lineNumber }; // Ampersand
     } else if (expresionesRegulares.prontzy.test(token)) {
-        return { type: "<t_prontzy>", value: token, lineNumber }; // Función prontzy
+      return { type: "<t_prontzy>", value: token, lineNumber }; // Función prontzy
     } else if (expresionesRegulares.rtszy.test(token)) {
-        return { type: "<t_rtszy>", value: token, lineNumber }; // Función rtszy
+      return { type: "<t_rtszy>", value: token, lineNumber }; // Función rtszy
     } else if (expresionesRegulares.fluetzy.test(token)) {
-        return { type: "<t_fluetzy>", value: token, lineNumber }; // Función fluetzy
+      return { type: "<t_fluetzy>", value: token, lineNumber }; // Función fluetzy
     } else if (expresionesRegulares.lostzy.test(token)) {
-        return { type: "<t_lostzy>", value: token, lineNumber }; // Función lostzy
+      return { type: "<t_lostzy>", value: token, lineNumber }; // Función lostzy
     } else if (expresionesRegulares.taplizy.test(token)) {
-        return { type: "<t_taplizy>", value: token }; // Función taplizy
+      return { type: "<t_taplizy>", value: token }; // Función taplizy
     } else if (expresionesRegulares.doctzy.test(token)) {
-        return { type: "<t_doctzy>", value: token, lineNumber }; // Función doctzy
+      return { type: "<t_doctzy>", value: token, lineNumber }; // Función doctzy
     } else if (expresionesRegulares.ompatzy.test(token)) {
-        return { type: "<t_ompatzy>", value: token, lineNumber }; // Función ompatzy
+      return { type: "<t_ompatzy>", value: token, lineNumber }; // Función ompatzy
     } else if (expresionesRegulares.endzy.test(token)) {
-        return { type: "<t_endzy>", value: token, lineNumber }; // Función endzy
+      return { type: "<t_endzy>", value: token, lineNumber }; // Función endzy
     } else if (expresionesRegulares.ompurtzy.test(token)) {
-        return { type: "<t_ompurtzy>", value: token, lineNumber }; // Función ompurtzy
+      return { type: "<t_ompurtzy>", value: token, lineNumber }; // Función ompurtzy
     } else if (expresionesRegulares.briekzy.test(token)) {
-        return { type: "<t_briekzy>", value: token, lineNumber }; // Función briekzy
+      return { type: "<t_briekzy>", value: token, lineNumber }; // Función briekzy
     } else if (expresionesRegulares.rengizy.test(token)) {
-        return { type: "<t_rengizy>", value: token, lineNumber }; // Función rengizy
+      return { type: "<t_rengizy>", value: token, lineNumber }; // Función rengizy
     } else if (expresionesRegulares.difzy.test(token)) {
-        return { type: "<t_difzy>", value: token, lineNumber }; // Función difzy
+      return { type: "<t_difzy>", value: token, lineNumber }; // Función difzy
     } else if (expresionesRegulares.dilzy.test(token)) {
-        return { type: "<t_dilzy>", value: token, lineNumber }; // Función dilzy
+      return { type: "<t_dilzy>", value: token, lineNumber }; // Función dilzy
     } else if (expresionesRegulares.ixciptzy.test(token)) {
-        return { type: "<t_ixciptzy>", value: token, lineNumber }; // Función ixciptzy
+      return { type: "<t_ixciptzy>", value: token, lineNumber }; // Función ixciptzy
     } else if (expresionesRegulares.troyzy.test(token)) {
-        return { type: "<t_troyzy>", value: token, lineNumber }; // Función troyzy
+      return { type: "<t_troyzy>", value: token, lineNumber }; // Función troyzy
     } else if (expresionesRegulares.eszy.test(token)) {
-        return { type: "<t_eszy>", value: token, lineNumber }; // Función eszy
+      return { type: "<t_eszy>", value: token, lineNumber }; // Función eszy
     } else if (expresionesRegulares.fonellyzy.test(token)) {
-        return { type: "<t_fonellyzy>", value: token, lineNumber }; // Función fonellyzy
+      return { type: "<t_fonellyzy>", value: token, lineNumber }; // Función fonellyzy
     } else if (expresionesRegulares.frumzy.test(token)) {
-        return { type: "<t_frumzy>", value: token, lineNumber }; // Función frumzy
+      return { type: "<t_frumzy>", value: token, lineNumber }; // Función frumzy
     } else if (expresionesRegulares.mas_igual.test(token)) {
-        return { type: "<t_mas_igual>", value: token, lineNumber }; // Operador de suma y asignación
+      return { type: "<t_mas_igual>", value: token, lineNumber }; // Operador de suma y asignación
     } else if (expresionesRegulares.menos_igual.test(token)) {
-        return { type: "<t_menos_igual>", value: token, lineNumber }; // Operador de resta y asignación
+      return { type: "<t_menos_igual>", value: token, lineNumber }; // Operador de resta y asignación
     } else if (expresionesRegulares.identificadores.test(token)) {
-      //codigo para detectar palabras reservadas mal escritas
-      var palabrasReservadas = [
-        "ontzy",
-        "fluetzy",
-        "complixzy",
-        "traizy",
-        "felsizy",
-        "strongzy",
-        "rew-strongzy",
-        "fstrongzy",
-        "lostzy",
-        "traplizy",
-        "sitzy",
-        "nunizy",
-        "ofzy",
-        "ilsizy",
-        "ilofzy",
-        "furzy",
-        "in",
-        "wholizy",
-        "du",
-        "pesszy",
-        "cuntonaizy",
-        "clesszy",
-        "silfzy",
-        "__onotzy__",
-        "__niwzy__",
-        "super",
-        "clszy",
-        "args",
-        "kwargs",
-        "ritarnzy",
-        "__cellzy__",
-        "prontzy",
-        "rtszy",
-        "fluetzy",
-        "lostzy",
-        "taplizy",
-        "doctzy",
-        "ompatzy",
-        "endzy",
-        "ompurtzy",
-        "briekzy",
-        "rengizy",
-        "difzy",
-        "dilzy",
-        "ixciptzy",
-        "troyzy",
-        "eszy",
-        "fonellyzy",
-        "frumzy",
-      ];
-      
-      return { type: "<t_identificador>", value: token, lineNumber }; // Identificador
+      // Verificar si la palabra termina con "zy"
+      // if (/[a-zA-Z0-9]\bzy$/i.test(token)) {
+      //     return { type: "<t_reservadamal>", value: token, lineNumber }; // Palabra reservada mal escrita
+      // } else {
+      //     return { type: "<t_identificador>", value: token, lineNumber }; // Identificador válido
+      // } // Identificador
+      console.log(token)
+      if (token.endsWith("zy")) {
+        return { type: "<t_reservada_mal>", value: token, lineNumber };
+      } else {
+        return { type: "<t_identificador>", value: token, lineNumber };
+      }
     } else if (expresionesRegulares.saltoLinea.test(token)) {
       return { type: "<t_salto_linea>", value: token, lineNumber }; // Salto de línea
-    } else {
-      return { type: "<t_desconocido>", value: token, lineNumber, coment:"Caracter no reconocido en el alfabeto del lenguaje." }; // Token desconocido
+    } else if (expresionesRegulares.palabrasReservadasmal.test(token)) {
+      return { type: "<t_reservada_mal>", value: token, lineNumber }; // Comentario
     }
-    
+    else {
+      return { type: "<t_desconocido>", value: token, lineNumber, coment: "Caracter no reconocido en el alfabeto del lenguaje." }; // Token desconocido
+    }
   });
 
   return tokenTypes;
@@ -378,11 +340,11 @@ function lexico(input) {
 
 
 // Ejemplo de uso
-//const expresion = codigojs;
-//const tokens = lexico(expresion);
-//console.log(tokens);
+const expresion = codigojs;
+const tokens = lexico(expresion);
+console.log(tokens);
 
-function analisisLexico(){
+function analisisLexico() {
   const codigo2 = document.getElementById('codigo2');
 
 
@@ -397,7 +359,7 @@ function analisisLexico(){
   // Crear una tabla para mostrar los tokens y sus números de línea
   // const tokensTable = document.createElement('table');
 
-  const tokensBuenos = tokens.filter(token => (token.type !== "<t_desconocido>") && (token.type !== "<t_salto_linea>"));
+  const tokensBuenos = tokens.filter(token => (token.type !== "<t_desconocido>") && (token.type !== "<t_salto_linea>") && (token.type !== "<t_reservada_mal>"));
   const tokensBuenosTable = document.createElement('table')
 
   tokensBuenosTable.innerHTML = `
@@ -417,13 +379,13 @@ function analisisLexico(){
 
   // Llenar la tabla con los tokens y sus números de línea
   tokensBuenos.forEach(token => {
-      const row = tokensBody.insertRow();
-      const cell1 = row.insertCell();
-      const cell2 = row.insertCell();
-      const cell3 = row.insertCell();
-      cell1.textContent = token.lineNumber; // Utiliza token.lineNumber en lugar de token.linea
-      cell2.textContent = token.value.toString(); // Convertir a cadena de texto
-      cell3.textContent = token.type;
+    const row = tokensBody.insertRow();
+    const cell1 = row.insertCell();
+    const cell2 = row.insertCell();
+    const cell3 = row.insertCell();
+    cell1.textContent = token.lineNumber; // Utiliza token.lineNumber en lugar de token.linea
+    cell2.textContent = token.value.toString(); // Convertir a cadena de texto
+    cell3.textContent = token.type;
   });
 
   // Mostrar la tabla en el div "tokens-container"
@@ -433,11 +395,12 @@ function analisisLexico(){
 
 
 
-// Tabla de errores
-const tokensError = tokens.filter(token => token.type === "<t_desconocido>");  
-const tokensErrorTable = document.createElement('table')
 
-tokensErrorTable.innerHTML = `
+  // Tabla de errores
+  const tokensError = tokens.filter(token => (token.type === "<t_desconocido>") || (token.type === "<t_reservada_mal>"));
+  const tokensErrorTable = document.createElement('table')
+
+  tokensErrorTable.innerHTML = `
 <thead>
     <tr>
         <th>Línea</th>
@@ -450,19 +413,19 @@ tokensErrorTable.innerHTML = `
 </tbody>
 `;
 
-const tokensBodyError = tokensErrorTable.querySelector('#tokens-body-error');
+  const tokensBodyError = tokensErrorTable.querySelector('#tokens-body-error');
 
-tokensError.forEach(token => {
-  const row = tokensBodyError.insertRow();
-  const cell1 = row.insertCell();
-  const cell2 = row.insertCell();
-  const cell3 = row.insertCell();
-  const cell4 = row.insertCell();
-  cell1.textContent = token.lineNumber; // Utiliza token.lineNumber en lugar de token.linea
-  cell2.textContent = token.value.toString(); // Convertir a cadena de texto
-  cell3.textContent = token.type;
-  cell4.textContent = token.coment;
-});
+  tokensError.forEach(token => {
+    const row = tokensBodyError.insertRow();
+    const cell1 = row.insertCell();
+    const cell2 = row.insertCell();
+    const cell3 = row.insertCell();
+    const cell4 = row.insertCell();
+    cell1.textContent = token.lineNumber; // Utiliza token.lineNumber en lugar de token.linea
+    cell2.textContent = token.value.toString(); // Convertir a cadena de texto
+    cell3.textContent = token.type;
+    cell4.textContent = token.coment;
+  });
 
   const tokensContainerError = document.getElementById('tokens-container-error');
   tokensContainerError.innerHTML = ''; // Limpiar el contenido previo
