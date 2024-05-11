@@ -86,6 +86,7 @@ const expresionesRegulares = {
   arroba: /^(\@)$/,
   numeral: /^(\#)$/,
   ampersand: /^(\&)$/,
+  comilla: /^(\')$/,
 
   //Funciones faltantes
   prontzy: /^(prontzy)$/,
@@ -133,11 +134,11 @@ function lexico(input) {
   const tokens = input
     .replace(/\s+/g, "") // Eliminar espacios en blanco
     .match(
-      /(\d+|\$\$[a-zA-Z0-9áéíóúÁÉÍÓÚüÜ,.:;!?¡¿/\s]*|\"[a-zA-Z0-9áéíóúÁÉÍÓÚüÜ,.:;!?¡¿/\s]*\"|\*\*|\-\-|\/\-|\+\=|\+|\-\=|\-|(\*args)|(\*\*kwargs)|\*|\/|\(|\)|\^|\"|\!|\¡|\@|\#|\%|\&|\=|\[|\]|\{|\}|\\|\||\:|\;|\'|\<\=|\>\=|\<|\>|\.|\,|\?|\¿|(clesszy)|(difzy)|(__onotzy__)|(silfzy)|(wholizy)|(prontzy)|(furzy)|(in)|(du)|(ontzy)|(rtszy)|(fluetzy)|(cumplixzy)|(lostzy)|(taplizy)|(sitzy)|(doctzy)|(__niwzy__)|(super)|(clszy)|(ritarnzy)|(traplizy)|(__cellzy__)|(ompatzy)|(pesszy)|(endzy)|(ompurtzy)|(briekzy)|(rengizy)|(dilzy)|(ixciptzy)|(troyzy)|(eszy)|(fonellyzy)|(frumzy)|(felsizy)|(strongzy)|(rew-strongzy)|(fstrongzy)|(nunizy)|(traizy)|(ofzy)|(ilofzy)|(ilsizy)|(cuntonaizy)|[a-zA-Z_]\w*|\_|\S)/g
+      /(\d+|\$\$[a-zA-Z0-9áéíóúÁÉÍÓÚüÜ,.:;!?¡¿/\s]*|\"[a-zA-Z0-9áéíóúÁÉÍÓÚüÜ,.:;!?¡¿/\s]*\"|\*\*|\-\-|\/\-|\+\=|\+|\-\=|\-|(\*args)|(\*\*kwargs)|\'|\*|\/|\(|\)|\^|\"|\!|\¡|\@|\#|\%|\&|\=|\[|\]|\{|\}|\\|\||\:|\;|\'|\<\=|\>\=|\<|\>|\.|\,|\?|\¿|(clesszy)|(difzy)|(__onotzy__)|(silfzy)|(wholizy)|(prontzy)|(furzy)|(in)|(du)|(ontzy)|(rtszy)|(fluetzy)|(cumplixzy)|(lostzy)|(taplizy)|(sitzy)|(doctzy)|(__niwzy__)|(super)|(clszy)|(ritarnzy)|(traplizy)|(__cellzy__)|(ompatzy)|(pesszy)|(endzy)|(ompurtzy)|(briekzy)|(rengizy)|(dilzy)|(ixciptzy)|(troyzy)|(eszy)|(fonellyzy)|(frumzy)|(felsizy)|(strongzy)|(rew-strongzy)|(fstrongzy)|(nunizy)|(traizy)|(ofzy)|(ilofzy)|(ilsizy)|(cuntonaizy)|[a-zA-Z_]\w*|\_|\S)/g
     ); // Identificar números, operadores, identificadores y otros caracteres
   // Dividir cada línea en tokens y registrar el número de línea para cada token
   const tokensWithLine = lines.flatMap((line, lineNumber) => {
-    return line.match(/(\d+|\$\$[a-zA-Z0-9áéíóúÁÉÍÓÚüÜ,.:;!?¡¿/\s]*|\"[a-zA-Z0-9áéíóúÁÉÍÓÚüÜ,.:;!?¡¿/\s]*\"|\*\*|\-\-|\/\-|\+\=|\+|\-\=|\-|(\*args)|(\*\*kwargs)|\*|\/|\(|\)|\^|\"|\!|\¡|\@|\#|\%|\&|\=|\[|\]|\{|\}|\\|\||\:|\;|\'|\<\=|\>\=|\<|\>|\.|\,|\?|\¿|\¬|(clesszy)|(difzy)|(__onotzy__)|(silfzy)|(wholizy)|(prontzy)|(furzy)|(in)|(du)|(ontzy)|(rtszy)|(fluetzy)|(cumplixzy)|(lostzy)|(taplizy)|(sitzy)|(doctzy)|(__niwzy__)|(super)|(clszy)|(ritarnzy)|(traplizy)|(__cellzy__)|(ompatzy)|(pesszy)|(endzy)|(ompurtzy)|(briekzy)|(rengizy)|(dilzy)|(ixciptzy)|(troyzy)|(eszy)|(fonellyzy)|(frumzy)|(felsizy)|(strongzy)|(rew-strongzy)|(fstrongzy)|(nunizy)|(traizy)|(ofzy)|(ilofzy)|(ilsizy)|(cuntonaizy)|[a-zA-Z_]\w*|\_||\S)/g).map(token => ({ token, lineNumber: lineNumber + 1 }));
+    return line.match(/(\d+|\$\$[a-zA-Z0-9áéíóúÁÉÍÓÚüÜ,.:;!?¡¿/\s]*|\"[a-zA-Z0-9áéíóúÁÉÍÓÚüÜ,.:;!?¡¿/\s]*\"|\*\*|\-\-|\/\-|\+\=|\+|\-\=|\-|(\*args)|(\*\*kwargs)|\'|\*|\/|\(|\)|\^|\"|\!|\¡|\@|\#|\%|\&|\=|\[|\]|\{|\}|\\|\||\:|\;|\'|\<\=|\>\=|\<|\>|\.|\,|\?|\¿|\¬|(clesszy)|(difzy)|(__onotzy__)|(silfzy)|(wholizy)|(prontzy)|(furzy)|(in)|(du)|(ontzy)|(rtszy)|(fluetzy)|(cumplixzy)|(lostzy)|(taplizy)|(sitzy)|(doctzy)|(__niwzy__)|(super)|(clszy)|(ritarnzy)|(traplizy)|(__cellzy__)|(ompatzy)|(pesszy)|(endzy)|(ompurtzy)|(briekzy)|(rengizy)|(dilzy)|(ixciptzy)|(troyzy)|(eszy)|(fonellyzy)|(frumzy)|(felsizy)|(strongzy)|(rew-strongzy)|(fstrongzy)|(nunizy)|(traizy)|(ofzy)|(ilofzy)|(ilsizy)|(cuntonaizy)|[a-zA-Z_]\w*|\_||\S)/g).map(token => ({ token, lineNumber: lineNumber + 1 }));
   });
 
   // Identificar el tipo de cada token y retornarlos
@@ -312,25 +313,50 @@ function lexico(input) {
       return { type: "<t_mas_igual>", value: token, lineNumber }; // Operador de suma y asignación
     } else if (expresionesRegulares.menos_igual.test(token)) {
       return { type: "<t_menos_igual>", value: token, lineNumber }; // Operador de resta y asignación
-    } else if (expresionesRegulares.identificadores.test(token)) {
-      // Verificar si la palabra termina con "zy"
-      // if (/[a-zA-Z0-9]\bzy$/i.test(token)) {
-      //     return { type: "<t_reservadamal>", value: token, lineNumber }; // Palabra reservada mal escrita
-      // } else {
-      //     return { type: "<t_identificador>", value: token, lineNumber }; // Identificador válido
-      // } // Identificador
-      console.log(token)
-      if (token.endsWith("zy")) {
-        return { type: "<t_reservada_mal>", value: token, lineNumber };
-      } else {
-        return { type: "<t_identificador>", value: token, lineNumber };
-      }
+    } else if (expresionesRegulares.comilla.test(token)){
+      return{ type: "<t_comilla>", value: token, lineNumber };
     } else if (expresionesRegulares.saltoLinea.test(token)) {
       return { type: "<t_salto_linea>", value: token, lineNumber }; // Salto de línea
-    } else if (expresionesRegulares.palabrasReservadasmal.test(token)) {
-      return { type: "<t_reservada_mal>", value: token, lineNumber }; // Comentario
-    }
-    else {
+    } else if (expresionesRegulares.identificadores.test(token)) {
+      function similarity(str1, arr2) {
+        const set1 = new Set(str1);
+        let maxSimilarity = 0;
+
+        arr2.forEach(str2 => {
+          const set2 = new Set(str2);
+          const intersection = new Set([...set1].filter(x => set2.has(x)));
+          const union = new Set([...set1, ...set2]);
+          const currentSimilarity = intersection.size / union.size;
+          if (currentSimilarity > maxSimilarity) {
+            maxSimilarity = currentSimilarity;
+          }
+        });
+
+        return maxSimilarity;
+      }
+
+      const string1 = token;
+      const palabrasReservadas = [
+        "ontzy", "fluetzy", "complixzy", "traizy", "felsizy", "strongzy",
+        "rew-strongzy", "fstrongzy", "lostzy", "traplizy", "sitzy", "nunizy",
+        "ofzy", "ilsizy", "ilofzy", "furzy", "in", "wholizy", "du", "pesszy",
+        "cuntonaizy", "clesszy", "silfzy", "__onotzy__", "__niwzy__", "super",
+        "clszy", "args", "kwargs", "ritarnzy", "__cellzy__", "prontzy", "rtszy",
+        "fluetzy", "lostzy", "taplizy", "doctzy", "ompatzy", "endzy", "ompurtzy",
+        "briekzy", "rengizy", "difzy", "dilzy", "ixciptzy", "troyzy", "eszy",
+        "fonellyzy", "frumzy", "/^-?[0-9]+(\\.[0-9]+)?/"
+      ];
+
+      const percentageSimilarity = similarity(string1, palabrasReservadas) * 100;
+      console.log(`El porcentaje de similitud entre "${string1}" y las palabras reservadas es: ${percentageSimilarity.toFixed(2)}%`);
+
+      if (percentageSimilarity < 60) {
+        return { type: "<t_identificador>", value: token, lineNumber }
+      } else {
+        return { type: "<t_reservada_mal>", value: token, lineNumber, coment: `El porcentaje de similitud entre "${string1}" y las palabras reservadas es: ${percentageSimilarity.toFixed(2)}%` }
+      }
+  
+    } else {
       return { type: "<t_desconocido>", value: token, lineNumber, coment: "Caracter no reconocido en el alfabeto del lenguaje." }; // Token desconocido
     }
   });
