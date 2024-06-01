@@ -464,3 +464,6 @@ function analisisLexico() {
   const tokensCadenaDiv = document.getElementById('tokens-cadena');
   tokensCadenaDiv.textContent = tokensCadena;
 }
+
+
+
